@@ -258,7 +258,7 @@ function collationtools_sendtomvd($ids=null){
         $hriterror = preg_match('/rror/', $response);
         if ($hriterror == 0){
             // try to fetch json for created mvd
-            $json = file_get_contents('http://' . $_SERVER['HTTP_HOST'] . "/json/list/" . $origdocpath);
+            $json = file_get_contents('http://' . $_SERVER['HTTP_HOST'] . "/calliope/json/list/" . $origdocpath);
             $hriterror = preg_match('/HritServer Error/', $response);
             //$message =  "<p>MVD created. You may now view <a href='/collationtools/apparatus#$docpath'>table apparatus</a> or <a href='/collationtools/compare#$docpath'>side-by-side comparison</a></p>";
             if ($hriterror == 0){
