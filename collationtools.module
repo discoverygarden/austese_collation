@@ -162,8 +162,9 @@ function collationtools_tableapparatus($left = null, $right = null) {
 }
 
 function collationtools_sendtomvd($ids = null) {
-  // FIXME: should not hardcode these values - should be in properties somewhere
-  $hritimport = 'http://' . $_SERVER['HTTP_HOST'] . "/calliope/import/";
+  global $base_url;
+  $mvd_url = variable_get('mvd_server_url', $base_url) . variable_get('austese_server_prefix', '');
+  $hritimport = "$mvd_url/import";
   // generate a unique document identifier for new MVD if docpath isn't specified
   $docpath = $_GET['docpath'];
   if ($docpath == null) {
@@ -270,13 +271,13 @@ function collationtools_sendtomvd($ids = null) {
     $hriterror = preg_match('/rror/', $response);
     if ($hriterror == 0) {
       // try to fetch json for created mvd
-      $json = file_get_contents('http://' . $_SERVER['HTTP_HOST'] . "/calliope/json/list/" . $origdocpath);
+      $json = file_get_contents("$mvd_url/json/list/$origdocpath");
       $hriterror = preg_match('/HritServer Error/', $response);
       //$message =  "<p>MVD created. You may now view <a href='/collationtools/apparatus#$docpath'>table apparatus</a> or <a href='/collationtools/compare#$docpath'>side-by-side comparison</a></p>";
       if ($hriterror == 0) {
         // store MVD details in db for now
         // parse existing mvd results to check if one exists with same name, get id and delete
-        $mvdsearchurl = 'http://' . $_SERVER['HTTP_HOST'] . "/" . drupal_get_path('module', 'repository') . "/api/mvds/?searchField=name&query=" . $docpath . "$";
+        $mvdsearchurl = $base_url. "/" . drupal_get_path('module', 'repository') . "/api/mvds/?searchField=name&query=" . $docpath . "$";
         $mvdsearch = file_get_contents($mvdsearchurl);
         $mvdsearchjson = json_decode($mvdsearch, TRUE);
         $existingmvdcount = $mvdsearchjson['count'];
@@ -285,7 +286,7 @@ function collationtools_sendtomvd($ids = null) {
           $ch3 = curl_init();
           curl_setopt($ch3, CURLOPT_CUSTOMREQUEST, 'DELETE');
           curl_setopt($ch3, CURLOPT_RETURNTRANSFER, TRUE);
-          curl_setopt($ch3, CURLOPT_URL, trim('http://' . $_SERVER['HTTP_HOST'] . "/" . drupal_get_path('module', 'repository') . "/api/mvds/" . $existingmvd));
+          curl_setopt($ch3, CURLOPT_URL, trim($base_url . "/" . drupal_get_path('module', 'repository') . "/api/mvds/" . $existingmvd));
           $dbresponse = curl_exec($ch3);
           $dberr = curl_errno($ch3);
           $dberror = curl_error($ch3);
@@ -299,7 +300,7 @@ function collationtools_sendtomvd($ids = null) {
           }
         }
         // post new MVD details to db
-        $mvddburl = 'http://' . $_SERVER['HTTP_HOST'] . "/" . drupal_get_path('module', 'repository') . "/api/mvds/";
+        $mvddburl = $base_url . "/" . drupal_get_path('module', 'repository') . "/api/mvds/";
 
         $newmvd = array('name' => $origdocpath, 'resources' => $idarr, 'filter' => $filter);
         if (isset($_GET['project'])) {
