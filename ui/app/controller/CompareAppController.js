@@ -224,7 +224,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
             });
             // update right hand side
             versions[1].body.load({
-                url: '/html/comparison/' + documentId,
+                url: '/calliope/html/comparison/' + documentId,
                 method: 'GET',
                 params: {
                     'version1': version2,

@@ -56,7 +56,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
     applyOptions: function() {
         var tableView = Ext.ComponentQuery.query('#tableView')[0];
         var documentId = Ext.ComponentQuery.query('#documentSelector')[0].getValue();
-        var url = '/html/table/' + documentId;
+        var url = '/calliope/html/table/' + documentId;
         var params = this.getTableViewConfig();
         // reload the table view with the new config options
         tableView.body.load({
@@ -135,7 +135,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
             var params = this.getTableViewConfig();
             var baseurl = this.baseurl;
             versionView.body.load({
-                url: '/html/' + documentId,
+                url: '/calliope/html/' + documentId,
                 method: 'GET',
                 params: {
                     'version1': versionName,
