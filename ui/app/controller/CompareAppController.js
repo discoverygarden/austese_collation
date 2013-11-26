@@ -290,6 +290,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
         uiPanel.showAt(placeholder.getX(), placeholder.getY());
     },
     init: function(application) {
+        //this.baseurl = jQuery('#metadata').data('baseurl');
         this.baseurl = jQuery('#metadata').data('baseurl');
         Ext.EventManager.onWindowResize(this.resizeUI, this);
         this.control({
