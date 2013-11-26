@@ -2,7 +2,8 @@
 Ext.Loader.setConfig({
     enabled: true
 });
-var modulePath = '/sites/all/modules/austese_collation';
+//var modulePath = '/sites/all/modules/austese_collation';
+var modulePath = Drupal.settings.austese.module_path;
 Ext.Loader.setPath('TableApparatusApp.store',  modulePath + '/ui/app/store');
 Ext.Loader.setPath('TableApparatusApp.model',  modulePath + '/ui/app/model');
 Ext.Loader.setPath('TableApparatusApp.reader',  modulePath + '/ui/app/reader');
