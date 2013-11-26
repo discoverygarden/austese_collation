@@ -136,6 +136,7 @@ function collationtools_compare($left = null, $right = null) {
 }
 
 function collationtools_tableapparatus($left = null, $right = null) {
+  global $base_path;
   $breadcrumb = array();
   $breadcrumb[] = l('Home', '<front>');
   $breadcrumb[] = l('Collation Tools', 'collationtools');

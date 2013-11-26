@@ -91,7 +91,7 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
                             xtype: 'combobox',
                             itemId: 'documentSelector',
                             forceSelection: true,
-                            fieldLabel: 'Document',
+                            fieldLabel: 'Selected Document',
                             store: 'DocumentListStore',
                             displayField: 'documentId',
                             valueVield: 'documentId',
