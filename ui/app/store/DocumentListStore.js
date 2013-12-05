@@ -21,7 +21,7 @@ Ext.define('TableApparatusApp.store.DocumentListStore', {
             model: 'TableApparatusApp.model.DocumentListModel',
             proxy: {
                 type: 'ajax',
-                url: '/islandora/collation/islandora%3A1137/Blarger/list',
+                url: '/islandora/collation/' + crit_ed + '/' + mvd + '/list',
                 //url: '/sites/all/modules/austese_repository/api/mvds/' + (project? "?project="+project:""),
                 reader: {
                     type: 'json',
