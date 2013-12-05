@@ -2,6 +2,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
     extend: 'Ext.app.Controller',
     getConfigWindow: function(){
         if (!this.configWindow) {
+          alert("pause")
             this.configWindow = Ext.ComponentQuery.query('#tableappwindow')[0];
         }
         return this.configWindow;
@@ -56,7 +57,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
     applyOptions: function() {
         var tableView = Ext.ComponentQuery.query('#tableView')[0];
         var documentId = Ext.ComponentQuery.query('#documentSelector')[0].getValue();
-        var url = '/calliope/html/table/' + documentId;
+        var url = '/html/table/' + documentId;
         var params = this.getTableViewConfig();
         // reload the table view with the new config options
         tableView.body.load({
@@ -91,7 +92,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
         // update the list of versions when the document id changes (this will trigger version view to update)
         var versionListStore = Ext.getStore("VersionListStore");
         // TODO: update to /json/list when id is included in json
-        versionListStore.getProxy().url = '/calliope/json/list/' + newVal;
+        versionListStore.getProxy().url = '/json/list/' + newVal;
 
         // after version list has loaded, reset the table view version selection options
         versionListStore.load({scope: this, callback:function(){
@@ -135,7 +136,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
             var params = this.getTableViewConfig();
             var baseurl = this.baseurl;
             versionView.body.load({
-                url: '/calliope/html/' + documentId,
+                url: '/html/' + documentId,
                 method: 'GET',
                 params: {
                     'version1': versionName,
