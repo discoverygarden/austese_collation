@@ -2,7 +2,6 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
     extend: 'Ext.app.Controller',
     getConfigWindow: function(){
         if (!this.configWindow) {
-          alert("pause")
             this.configWindow = Ext.ComponentQuery.query('#tableappwindow')[0];
         }
         return this.configWindow;
@@ -99,23 +98,28 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
             this.getConfigWindow().down('grid').getSelectionModel().selectAll();
         }});
     },
-    initSelectDocument: function(){
-        var docombo = Ext.ComponentQuery.query('#documentSelector')[0];
-        var urlsplit = document.location.href.split('#');
-        if (urlsplit.length > 1){
-            var docpath = decodeURIComponent(urlsplit[1]);
-            var docstore = Ext.getStore('DocumentListStore');
-            var rec = docstore.findRecord('documentId',docpath);
-            if (!rec || rec == -1){
-                // add to document list if it is not already in the list
-                rec = docstore.add({documentId:docpath});
-            }
-            docombo.select(rec);
-        } else {
-            // set default init value for document if one wasn't provided
-            docombo.setValue('english/shakespeare/kinglear/act1/scene1');
-        }
-    },
+  initSelectDocument: function() {
+    var docombo = Ext.ComponentQuery.query('#documentSelector')[0];
+    //var urlsplit = document.location.href.split('#');
+    var hashsplit = document.location.href.split('#');
+    var slashsplit = hashsplit[1].split('/');
+    var mvd = slashsplit[0];
+    var crit_ed = slashsplit[1];
+    var docstore = Ext.getStore('DocumentListStore');
+    if (slashsplit.length > 1) {
+      var docpath = decodeURIComponent(mvd);
+      var rec = docstore.findRecord('documentId', docpath);
+      if (!rec || rec == -1) {
+        // add to document list if it is not already in the list
+        rec = docstore.add({documentId: docpath});
+      }
+      docombo.select(rec);
+    } else {
+      // set default init value for document if one wasn't provided
+      docstore.add({documentId: 'english/shakespeare/kinglear/act1/scene1'});
+      docombo.setValue('english/shakespeare/kinglear/act1/scene1');
+    }
+  },
     onVersionListLoad: function(store, records){
         // ensure first record is loaded into versionSelector combo and force select event to fire
         // this will ensure that the other views are updated
@@ -167,13 +171,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
                         bodyEl.annotationsEnabled = false;
 
                         enableAnnotationsOnElement(bodyEl);
-                    }
-                  /*  var versionViewBody = Ext.ComponentQuery.query('#versionView')[0].body;
-                    var textContent = versionViewBody.dom.textContent || versionViewBody.dom.innerText;
-                    var numContentCharacters = textContent.length;
-                    Ext.ComponentQuery.query('#tableappwindow')[0].down('form').getForm().findField('LENGTH').setValue(numContentCharacters);
-                    */
-                    
+                    }                  
                 }
             });
             // reload table view (with this version as base)
@@ -254,65 +252,10 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
                     }
                 }
             }
-            //var alignText = (firstVisible.dom.textContent || firstVisible.dom.innerText).substring(0,10);
 
-            // now try to find some text that matches close to the same percentage of scroll in tableView
-            // use the content of the last row in the table as this will be the same version as displayed in version view
-            //var textPercent = contentCharOffset / numContentCharacters;
-            //otherMaxScroll = tableViewBody.dom.scrollWidth - tableViewBody.dom.clientWidth;
-            //otherScroll = otherMaxScroll * textPercent;
-
-            //otherScroll = percent * Ext.fly(tableViewBody, '_internal').getWidth();
-            //var tableFirstVisible;
-            // FIXME: scroll by same percentage until the content alignment is working 
-            //tableViewBody.scrollTo('left', otherScroll);
-            
-            /*Ext.Array.each(tableViewBody.query("tr:last-child td"), function(e){
-                var current = Ext.get(e);
-                var offsets = current.getOffsetsTo(tableViewBody);
-                if (offsets[0] > otherScroll){
-                     //if current's offset is greater than what would be shown on screen, use prev
-                    if (offsets[0] > (otherScroll + tableViewBody.getWidth())) {
-                        tableFirstVisible = prevVisible;
-                    } else {
-                        tableFirstVisible =  current;
-                    }
-                    return false;
-                }
-                prevVisible = e;
-            });*/
             
             if (tableFirstVisible) {
-              /*  //console.log("looking for: " + alignText);//,tableFirstVisible);
-                var counter = 0;
-                var matchText = tableFirstVisible.dom.textContent || tableFirstVisible.dom.innerText;
-                var tmpNode = tableFirstVisible;
-                var match = false;
-                while (counter < 5 && tmpNode && !matchText.match(alignText)) {
-                    matchText = tmpNode.dom.textContent || tmpNode.dom.innerText;
-                    tmpNode = tmpNode.prev();
-                    
-                    counter++;
-                }
-                if (!matchText.match(alignText)) {
-                    // no match found, look in other direction
-                    counter = 0;
-                    matchText = "";
-                    tmpNode = tableFirstVisible.next();
-                    while(counter < 5 && tmpNode && !matchText.match(alignText)){
-                        matchText = tmpNode.dom.textContent || tmpNode.dom.innerText;
-                        tmpNode = tmpNode.next();
-                        
-                        counter++;
-                    }
-                    if (matchText.match(alignText)){
-                        //console.log("match found next : " + matchText,tmpNode)
-                        tableFirstVisible = tmpNode;
-                    }
-                } else {
-                    //console.log("match found prev: " + matchText,tmpNode)
-                    tableFirstVisible = tmpNode;
-                }*/
+
                 if (tableFirstVisible){
                     tableFirstVisible.scrollIntoView(tableViewBody);
                     //console.log(currentScrollAdjusted + " offset of first visible",firstVisible.getOffsetsTo(versionViewBody), firstVisible.dom.textContent || firstVisible.dom.innerText);
