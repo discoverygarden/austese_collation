@@ -12,8 +12,6 @@ Ext.define('TableApparatusApp.store.DocumentListStore', {
         var crit_ed = slashsplit[1];
         var me = this;
         cfg = cfg || {};
-        console.log('/sites/all/modules/austese_repository/api/mvds/');
-        console.log('/islandora/collation/islandora%3A1137/Blarger/list');
         var project = jQuery('#metadata').data('project');
         me.callParent([Ext.apply({
             storeId: 'DocumentListStore',
@@ -22,7 +20,6 @@ Ext.define('TableApparatusApp.store.DocumentListStore', {
             proxy: {
                 type: 'ajax',
                 url: '/islandora/collation/' + crit_ed + '/' + mvd + '/list',
-                //url: '/sites/all/modules/austese_repository/api/mvds/' + (project? "?project="+project:""),
                 reader: {
                     type: 'json',
                     root: 'results'

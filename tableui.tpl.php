@@ -2,11 +2,7 @@
 <link rel="stylesheet" href="/sites/all/libraries/ext-4.1.1a/resources/css/ext-all-gray.css">
 <?php 
 $modulePrefix = arg(0);
-if (property_exists($user,'data')){
- $fullscreen = $user->data['fullscreen'];
-} else {
- $fullscreen = false;
-}
+$fullscreen = false;
 if (!ISSET($project) && isset($_GET['project'])) {
  $project = $_GET['project'];
 } else {

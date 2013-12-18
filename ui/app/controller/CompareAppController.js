@@ -331,12 +331,13 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
         },
         afterrender: function() {
           this.resizeUI(Ext.Element.getViewportWidth(), Ext.Element.getViewportHeight());
+          Ext.getStore('DocumentListStore').on('load', this.initSelectDocument, this);
+          Ext.getStore('VersionListStore').on('load', this.onVersionListLoad, this);
         }
       }
 
     });
-    Ext.getStore('DocumentListStore').on('load', this.initSelectDocument, this);
-    Ext.getStore('VersionListStore').on('load', this.onVersionListLoad, this);
+
   }
 
 });

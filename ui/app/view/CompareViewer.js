@@ -26,11 +26,7 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
                     xtype:'toolbar',
                     dock:'bottom',
                     items:[
-                           {
-                              itemId: 'viewRecordBtn1',
-                              text: 'View record',
-                              // tooltip: 'Go to next variant'
-                           },
+
                            {
                               itemId: 'prevVariantBtn1',
                               iconCls: 'leftArrowIcon',
@@ -75,11 +71,7 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
                                iconCls: 'rightArrowIcon',
                                //tooltip: 'Go to next variant'
                            },
-                           {
-                               itemId: 'viewRecordBtn2',
-                               text: 'View record',
-                              // tooltip: 'Go to next variant'
-                            }
+
                     ]
                 },
                 {
