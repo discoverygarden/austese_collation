@@ -217,10 +217,10 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
             var dataId = baseurl + "/repository/resources/" + resuuid + "/content";
             if (response && response.target && response.target) {
               var bodyEl = response.target.dom;
-              jQuery(bodyEl).removeAnnotator().data('id', dataId).data('annolabel', 'LHS');
+              //jQuery(bodyEl).removeAnnotator().data('id', dataId).data('annolabel', 'LHS');
               bodyEl.annotationsEnabled = false;
               //console.log("enable anno on compare body", bodyEl)
-              enableAnnotationsOnElement(bodyEl);
+             // enableAnnotationsOnElement(bodyEl);
             }
           }
         }
@@ -254,10 +254,10 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
 
             var dataId = baseurl + "/repository/resources/" + resuuid + "/content";
             var bodyEl = response.target.dom;
-            jQuery(bodyEl).removeAnnotator().data('id', dataId).data('annolabel', 'RHS');
+          //  jQuery(bodyEl).removeAnnotator().data('id', dataId).data('annolabel', 'RHS');
             bodyEl.annotationsEnabled = false;
 
-            enableAnnotationsOnElement(bodyEl);
+          //  enableAnnotationsOnElement(bodyEl);
           }
         }
       });
@@ -331,13 +331,12 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
         },
         afterrender: function() {
           this.resizeUI(Ext.Element.getViewportWidth(), Ext.Element.getViewportHeight());
-          Ext.getStore('DocumentListStore').on('load', this.initSelectDocument, this);
-          Ext.getStore('VersionListStore').on('load', this.onVersionListLoad, this);
         }
       }
 
     });
-
+    Ext.getStore('DocumentListStore').on('load', this.initSelectDocument, this);
+    Ext.getStore('VersionListStore').on('load', this.onVersionListLoad, this);
   }
 
 });

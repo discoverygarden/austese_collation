@@ -1,8 +1,9 @@
 <link rel="stylesheet" href="/sites/all/libraries/ext-4.1.1a/resources/css/ext-all.css">
 <link rel="stylesheet" href="/sites/all/libraries/ext-4.1.1a/resources/css/ext-all-gray.css">
-<?php 
+<?php
 $modulePrefix = arg(0);
 $fullscreen = false;
+
 if (!ISSET($project) && isset($_GET['project'])) {
  $project = $_GET['project'];
 } else {
@@ -76,7 +77,7 @@ function getOffsetTopForElem( elem )
 }
 function synchroScroll(scrolledDiv,staticDiv)
 {
-	
+
 	// 2. find the most central span in the scrolled div
 	scrolledDiff = 4294967296;
 	scrolledSpan = null;

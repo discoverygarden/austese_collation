@@ -19,7 +19,7 @@ Ext.define('TableApparatusApp.store.DocumentListStore', {
             model: 'TableApparatusApp.model.DocumentListModel',
             proxy: {
                 type: 'ajax',
-                url: '/islandora/collation/' + crit_ed + '/' + mvd + '/list',
+                url: '/islandora/emic/collation/' + crit_ed + '/' + mvd + '/list',
                 reader: {
                     type: 'json',
                     root: 'results'
