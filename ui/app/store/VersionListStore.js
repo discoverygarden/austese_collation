@@ -6,22 +6,6 @@ Ext.define('TableApparatusApp.store.VersionListStore', {
         'TableApparatusApp.reader.VersionListReader'
     ],
 
-    /*constructor: function(cfg) {
-        var me = this;
-        cfg = cfg || {};
-        me.callParent([Ext.apply({
-            storeId: 'VersionListStore',
-            model: 'TableApparatusApp.model.VersionListModel',
-            proxy: {
-                type: 'ajax',
-                url: '', // managed by controller based on selected document id
-                reader: {
-                    type: 'version-reader'
-                }
-            }
-        }, cfg)]);
-    }*/
-    
    // using the JSON data
      constructor: function(cfg) {
         var me = this;
@@ -33,7 +17,7 @@ Ext.define('TableApparatusApp.store.VersionListStore', {
                 type: 'ajax',
                 pageParam: undefined,
                 startParam: undefined,
-                sortParam:undefined, 
+                sortParam:undefined,
                 limitParam: undefined,
                 noCache: false,
                 url: '', // managed by controller based on selected document id
@@ -44,5 +28,5 @@ Ext.define('TableApparatusApp.store.VersionListStore', {
             }
         }, cfg)]);
     }
-    
+
 });

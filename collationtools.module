@@ -91,6 +91,12 @@ function collationtools_menu() {
   return $items;
 }
 
+/**
+ * Builds Table of Contents.
+ *
+ * @return string
+ *   HTML
+ */
 function collationtools_toc() {
   // Create breadcrumbs trail
   $breadcrumb = array();
