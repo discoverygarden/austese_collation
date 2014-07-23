@@ -24,7 +24,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
             Ext.getBody().scrollTo('top',0);
         }
     },
-    /* 
+    /*
      * Reads config options from form and grid in the options window
      */
     getTableViewConfig: function(){
@@ -67,12 +67,12 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
 
         this.getConfigWindow().hide();
     },
-    viewRecord: function(button, event){ 
+    viewRecord: function(button, event){
         var docstore = Ext.getStore('DocumentListStore');
         var docombo = Ext.ComponentQuery.query('#documentSelector')[0];
         var docpath = docombo.getValue();
         var docrecord = docstore.getById(docpath);
-        
+
         var version1 = Ext.ComponentQuery.query('#versionSelector')[0].getValue();
         var resname = version1.split('/');
         resname = resname[resname.length - 1];
@@ -82,7 +82,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
            var res = resources[i];
            if (res.name && res.name == resname){
              resuuid = res.id;
-           } 
+           }
         }
         var dataId = this.baseurl + "/repository/resources/" + resuuid;
         document.location.href=dataId;
@@ -91,7 +91,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
         // update the list of versions when the document id changes (this will trigger version view to update)
         var versionListStore = Ext.getStore("VersionListStore");
         // TODO: update to /json/list when id is included in json
-        versionListStore.getProxy().url = '/json/list/' + newVal;
+        versionListStore.getProxy().url = '/emicdora/json/list/' + newVal;
 
         // after version list has loaded, reset the table view version selection options
         versionListStore.load({scope: this, callback:function(){
@@ -162,7 +162,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
                                var res = resources[i];
                                if (res.name && res.name == resname){
                                  resuuid = res.id;
-                               } 
+                               }
                             }
                         }
                         var dataId = baseurl + "/repository/resources/" + resuuid + "/content";
@@ -171,7 +171,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
                         bodyEl.annotationsEnabled = false;
 
                         enableAnnotationsOnElement(bodyEl);
-                    }                  
+                    }
                 }
             });
             // reload table view (with this version as base)
@@ -253,7 +253,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
                 }
             }
 
-            
+
             if (tableFirstVisible) {
 
                 if (tableFirstVisible){
@@ -264,7 +264,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
                     //firstVisible.frame("#ff0000", 1, { duration: 1000 });
                 }
             }
-            
+
         } else {
             // get current tableView scroll and move versionView to match
         }

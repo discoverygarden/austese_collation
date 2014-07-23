@@ -18,11 +18,11 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
     alias: 'widget.compareviewer',
     initComponent: function() {
         var me = this;
-        
+
         Ext.applyIf(me, {
             cls: 'tableapp',
             dockedItems: [
-                { 
+                {
                     xtype:'toolbar',
                     dock:'bottom',
                     items:[
@@ -41,9 +41,9 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
                               iconCls: 'rightArrowIcon',
                              // tooltip: 'Go to next variant'
                            },
-                           
+
                            {
-                              xtype: 'tbspacer' 
+                              xtype: 'tbspacer'
                            },
                            {
                               xtype: 'variantcountlabel'
@@ -147,7 +147,7 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
                         xtype: 'toolbar',
                         dock: 'bottom',
                         items: [
-                            
+
                             {
                                 xtype:'tbfill'
                             },
@@ -159,7 +159,7 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
                             }
                         ]
                     }]*/
-                    
+
                 },
                 {
                     xtype: 'versionview',

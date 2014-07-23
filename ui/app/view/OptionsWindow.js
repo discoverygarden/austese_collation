@@ -35,7 +35,7 @@ Ext.define('TableApparatusApp.view.OptionsWindow', {
                             value: 1000,
                             step: 100
                         },
-                        
+
                         {
                             name: 'COMPACT',
                             boxLabel: 'Compact',

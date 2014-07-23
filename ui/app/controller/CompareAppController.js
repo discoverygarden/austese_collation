@@ -15,7 +15,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
   onDocumentIdChange: function(t, newVal, oldVal, opts) {
     // update the list of versions when the document id changes (this will trigger version views to update)
     var versionListStore = Ext.getStore("VersionListStore");
-    versionListStore.getProxy().url = '/json/list/' + newVal;
+    versionListStore.getProxy().url = '/emicdora/json/list/' + newVal;
     this.versionListInit = false;
     versionListStore.load();
   },

@@ -17,7 +17,6 @@ if (!ISSET($project) && isset($_GET['project'])) {
  <?php if ($fullscreen):?>
  data-fullscreen="<?php print $fullscreen; ?>"
  <?php endif; ?>
- data-project="<?php print $project; ?>"
  data-moduleprefix="<?php print $modulePrefix; ?>"
  data-modulepath="<?php print drupal_get_path('module', 'collation'); ?>"
  data-baseurl="http://<?php print $_SERVER['SERVER_NAME']; ?>"
