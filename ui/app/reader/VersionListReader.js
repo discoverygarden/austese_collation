@@ -7,7 +7,8 @@ Ext.define('TableApparatusApp.reader.VersionListReader', {
     read: function(object) {
         var data = [];
         Ext.Array.map(object.responseText.split(","),function(i){
-                data.push(new TableApparatusApp.model.VersionListModel({"version": i.trim(), "longname": "Version " + i.trim()}))
+                data.push(new TableApparatusApp.model.VersionListModel({"version": i.trim(), "longname": "Version " + i.trim()}));
+
         });
         object.Result = data;
         return this.callParent([data]);

@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/sites/all/libraries/ext-4.1.1a/resources/css/ext-all.css">
 <link rel="stylesheet" href="/sites/all/libraries/ext-4.1.1a/resources/css/ext-all-gray.css">
-<?php 
+<?php
 $modulePrefix = arg(0);
 $fullscreen = false;
 
@@ -17,7 +17,6 @@ if (!ISSET($project) && isset($_GET['project'])) {
  <?php if ($fullscreen):?>
  data-fullscreen="<?php print $fullscreen; ?>"
  <?php endif; ?>
- data-project="<?php print $project; ?>"
  data-moduleprefix="<?php print $modulePrefix; ?>"
  data-modulepath="<?php print drupal_get_path('module', 'collation'); ?>"
  data-baseurl="http://<?php print $_SERVER['SERVER_NAME']; ?>"
@@ -77,7 +76,7 @@ function getOffsetTopForElem( elem )
 }
 function synchroScroll(scrolledDiv,staticDiv)
 {
-	
+
 	// 2. find the most central span in the scrolled div
 	scrolledDiff = 4294967296;
 	scrolledSpan = null;

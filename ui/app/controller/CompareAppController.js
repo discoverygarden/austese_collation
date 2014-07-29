@@ -15,7 +15,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
   onDocumentIdChange: function(t, newVal, oldVal, opts) {
     // update the list of versions when the document id changes (this will trigger version views to update)
     var versionListStore = Ext.getStore("VersionListStore");
-    versionListStore.getProxy().url = '/json/list/' + newVal;
+    versionListStore.getProxy().url = '/emicdora/json/list/' + newVal;
     this.versionListInit = false;
     versionListStore.load();
   },
@@ -217,10 +217,10 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
             var dataId = baseurl + "/repository/resources/" + resuuid + "/content";
             if (response && response.target && response.target) {
               var bodyEl = response.target.dom;
-              jQuery(bodyEl).removeAnnotator().data('id', dataId).data('annolabel', 'LHS');
+              //jQuery(bodyEl).removeAnnotator().data('id', dataId).data('annolabel', 'LHS');
               bodyEl.annotationsEnabled = false;
               //console.log("enable anno on compare body", bodyEl)
-              enableAnnotationsOnElement(bodyEl);
+             // enableAnnotationsOnElement(bodyEl);
             }
           }
         }
@@ -254,10 +254,10 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
 
             var dataId = baseurl + "/repository/resources/" + resuuid + "/content";
             var bodyEl = response.target.dom;
-            jQuery(bodyEl).removeAnnotator().data('id', dataId).data('annolabel', 'RHS');
+          //  jQuery(bodyEl).removeAnnotator().data('id', dataId).data('annolabel', 'RHS');
             bodyEl.annotationsEnabled = false;
 
-            enableAnnotationsOnElement(bodyEl);
+          //  enableAnnotationsOnElement(bodyEl);
           }
         }
       });
@@ -284,8 +284,9 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
     // force resize and repositioning of app when window resizes
     var uiPanel = Ext.ComponentQuery.query("compareviewer")[0];
     var placeholder = Ext.get('uiplaceholder');
+    var placeWidth = placeholder.getX() * 2;
     var newHeight = h - (placeholder.getY()) - 70;
-    var newWidth = w - placeholder.getX() - 30;
+    var newWidth = w - placeWidth;
     placeholder.setHeight(newHeight);
     uiPanel.setHeight(newHeight);
     placeholder.setWidth(newWidth);
