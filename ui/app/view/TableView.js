@@ -3,6 +3,7 @@ Ext.define('TableApparatusApp.view.TableView', {
     alias: 'widget.tableview',
     initComponent: function() {
         var me = this;
+        console.log(me);
         Ext.applyIf(me, {
             autoScroll: true,
             title: 'Apparatus Table',
