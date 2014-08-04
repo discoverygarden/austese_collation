@@ -356,7 +356,6 @@ function collationtools_sendtomvd($ids = null) {
     _add_project_or_repository($breadcrumb);
     $breadcrumb[] = t(drupal_get_title());
     drupal_set_breadcrumb($breadcrumb);
-    dsm(array(), "arr here");
     return t('<p>' . $response . '</p>' . $message);
   }
 }
@@ -376,16 +375,6 @@ function collationtools_theme() {
       'variables' => array('left' => null, 'right' => null)
     )
   );
-}
-
-function collationtools_preproccess_tableapparatus2(&$variables) {
-	dsm($variables, "collationtools");
-	
-}
-
-function collationtools_preproccess_extjsapp(&$variables) {
-	dsm($variables, "collationtools");
-	
 }
 
 /**
