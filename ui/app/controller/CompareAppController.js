@@ -158,7 +158,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
             elemColor = "ff0000";
           }
           // highlight selected variant
-          elem.highlight(elemColor, {attr: 'backgroundColor', duration: 1000});
+          elem.highlight(elemColor, {attr: 'backgroundColor', duration: 10000});
           // lookup corresponding variant on other side
           var matching = Ext.get(otherLetter + theNumber);
           var mvcount;
@@ -168,7 +168,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
             if (matchingnext) {
               matching = matchingnext;
             }
-            matching.highlight(otherColor, {attr: 'backgroundColor', duration: 1000});
+            matching.highlight(otherColor, {attr: 'backgroundColor', duration: 10000});
             matching.scrollIntoView(otherVersionView.body);
             mvcount = matching.getAttribute("data-variant");
           }
@@ -190,7 +190,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       var baseurl = this.baseurl;
       // update left hand side
       versions[0].body.load({
-        url: '/html/comparison/' + documentId,
+        url: '/collationtools/get_edits/' + documentId,
         method: 'GET',
         params: {
           'version1': version1,
@@ -227,7 +227,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       });
       // update right hand side
       versions[1].body.load({
-        url: '/html/comparison/' + documentId,
+        url: '/collationtools/get_edits/' + documentId,
         method: 'GET',
         params: {
           'version1': version2,
