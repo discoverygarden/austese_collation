@@ -167,10 +167,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
             }
             var dataId = baseurl + "/repository/resources/" + resuuid + "/content";
             var bodyEl = this.target.dom;
-            jQuery(bodyEl).removeAnnotator().data('id', dataId);
             bodyEl.annotationsEnabled = false;
-
-            enableAnnotationsOnElement(bodyEl);
           }
         }
       });
