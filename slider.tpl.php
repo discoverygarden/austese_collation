@@ -90,7 +90,7 @@ function calcMidpoint( obj, maxVScroll )
 	var scrollPos = obj.scrollTop();
 	return scrollPos+((obj.height()*scrollPos)/maxVScroll);
 }
-$(function() 
+$(function()
 {
 	var botmargin = ($("#centre").parent().outerHeight(true)-$("#centre").parent().outerHeight())/2;
 	var cheight = $(window).height()-($("#centre").offset().top+botmargin);
@@ -109,8 +109,8 @@ $(function()
 		backgroundify( cid, "pink", "v", "span" );
 		backgroundify( cid, "pink", "t", "td" );
 	}
-	$("#text").scroll(function () 
-	{ 
+	$("#text").scroll(function ()
+	{
         centralDiff = 4294967296;
 		oldCentralSpan = centralSpan;
 	    centralSpan = null;
@@ -134,7 +134,7 @@ $(function()
 			{
 				var actualTid = $(this).attr("id");
 				if ( actualTid.length==tid.length
-					||isText(actualTid.substr(tid.length)) ) 
+					||isText(actualTid.substr(tid.length)) )
 				{
 					var lpos = $(this).offset().left-$("#innertable").offset().left;
 					right = lpos+$(this).width();
@@ -684,7 +684,7 @@ Cor.
 What shall Cordelia speake? L</td><td>ove,</td><td>&nbsp;and be silent.
 Lear.
 Of all these bounds</td><td>&nbsp;even from this L</td><td>ine,</td><td>&nbsp;to this,
-With shadowie</td><td>&nbsp;F</td><td>orrests, and with Champ<span class="inserted">ions rich'd 
+With shadowie</td><td>&nbsp;F</td><td>orrests, and with Champ<span class="inserted">ions rich'd
 With plenteous River</span></td><td>s, and wide-skirted Meade</td><td>s
 We make the</td><td>e</td><td>&nbsp;Lady. T</td><td>o thine and Albanie</td><td>s i</td><td>ssues</td><td>
 Be this perpetual</td><td>l. W</td><td>hat say</td><td>es our second D</td><td>aughter?
@@ -1125,7 +1125,7 @@ Cor.
 What shall Cordelia speak? L</td><td>ove,</td><td>&nbsp;and be silent.
 Lear.
 Of all these bounds</td><td>&nbsp;even from this L</td><td>ine,</td><td>&nbsp;to this,
-With shadow<span class="inserted">y</span></td><td>&nbsp;F</td><td>orrests, and with Champ<span class="inserted">ions rich'd 
+With shadow<span class="inserted">y</span></td><td>&nbsp;F</td><td>orrests, and with Champ<span class="inserted">ions rich'd
 With plenteous River</span></td><td>s, and wide-skirted Mead</td><td>s
 We make th</td><td>e<span class="inserted">e</span></td><td>&nbsp;Lady. T</td><td>o thine and Alban<span class="inserted">y'</span></td><td>s <span class="inserted">I</span></td><td>ssues</td><td>
 Be this perpetua</td><td>l. W</td><td>hat say</td><td>es our second D</td><td>aughter?
@@ -1356,7 +1356,7 @@ Cor.
 What shall Cordelia speake? L</td><td>ove,</td><td>&nbsp;and be silent.
 Lear.
 Of all these bounds</td><td>&nbsp;even from this L</td><td>ine,</td><td>&nbsp;to this,
-With shadow<span class="inserted">y</span></td><td>&nbsp;F</td><td>orrests, and with Champ<span class="inserted">ions rich'd 
+With shadow<span class="inserted">y</span></td><td>&nbsp;F</td><td>orrests, and with Champ<span class="inserted">ions rich'd
 With plenteous River</span></td><td>s, and wide-skirted Mead</td><td>s
 We make th</td><td>e</td><td>&nbsp;Lady. T</td><td>o thine and Albanie<span class="inserted">'</span></td><td>s i</td><td>ssues</td><td>
 Be this perpetua</td><td>l. W</td><td>hat say</td><td>es our second D</td><td>aughter?
@@ -1588,7 +1588,7 @@ Cor.
 What shall Cordelia speake? L</td><td id="t181">ove,</td><td id="t182">&nbsp;and be silent.
 Lear.
 Of all these bounds</td><td id="t183">&nbsp;even from this L</td><td id="t184">ine,</td><td id="t185">&nbsp;to this,
-With shadowie</td><td id="t186">&nbsp;F</td><td id="t187">orrests, and with Champains rich'd 
+With shadowie</td><td id="t186">&nbsp;F</td><td id="t187">orrests, and with Champains rich'd
 With plenteous River</td><td id="t188">s, and wide-skirted Meade</td><td id="t189">s
 We make the</td><td id="t190">e</td><td id="t191">&nbsp;Lady. T</td><td id="t192">o thine and Albanie</td><td id="t193">s i</td><td id="t194">ssues</td><td id="t195">
 Be this perpetual</td><td id="t196">l. W</td><td id="t197">hat say</td><td id="t198">es our second D</td><td id="t199">aughter?
@@ -1790,10 +1790,10 @@ Hee'l</td><td id="t565">&nbsp;shape his old course,</td><td id="t566">&nbsp;in a
 </div>
 </div>
 <script>
-$("button[name='prefs']").click(function() 
+$("button[name='prefs']").click(function()
 {
 	var bheight = $("#buttons").height();
-	var cheight=$("#centre").height();	
+	var cheight=$("#centre").height();
 	if ( $("#table").is(":visible") )
 	{
 		$("#table").hide();
@@ -1802,17 +1802,17 @@ $("button[name='prefs']").click(function()
 		{height: 'show'},
 		{
           duration: "slow",
-		  step: function(now, fx) 
+		  step: function(now, fx)
 	      {
 			  var th = cheight-(now+bheight);
 			  $("#text").css("height",th+"px");
 		  }
     });
 });
-$("button[name='table']").click(function() 
+$("button[name='table']").click(function()
 {
 	var bheight = $("#buttons").height();
-	var cheight=$("#centre").height();	
+	var cheight=$("#centre").height();
 	if ( $("#prefs").is(":visible") )
 	{
 		$("#prefs").hide();
@@ -1826,17 +1826,17 @@ $("button[name='table']").click(function()
 			var th = cheight-($("#table").outerHeight()+bheight);
 			$("#text").css("height",th+"px");
 	      },
-		  step: function(now, fx) 
+		  step: function(now, fx)
 	      {
 			  var th = cheight-(now+bheight);
 			  $("#text").css("height",th+"px");
 		  }
     });
 });
-$("button[name='none']").click(function() 
+$("button[name='none']").click(function()
 {
 	var bheight = $("#buttons").height();
-	var cheight=$("#centre").height();	
+	var cheight=$("#centre").height();
 	if ( $("#prefs").is(":visible") )
 	{
 		$("#prefs").hide();

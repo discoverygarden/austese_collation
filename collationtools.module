@@ -124,7 +124,6 @@ function collationtools_compare($left = null, $right = null) {
   $breadcrumb[] = l('Collation Tools', 'collationtools');
   $breadcrumb[] = t(drupal_get_title());
   drupal_set_breadcrumb($breadcrumb);
-
   // Add JS/CSS to render array
   $modulePath = drupal_get_path('module', 'collationtools');
   drupal_add_js("$modulePath/js/emicdora_customizations.js");
