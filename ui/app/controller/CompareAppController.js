@@ -190,7 +190,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       var baseurl = this.baseurl;
       // update left hand side
       versions[0].body.load({
-        url: '/html/comparison/' + documentId,
+        url: '/collationtools/get_edits/' + documentId,
         method: 'GET',
         params: {
           'version1': version1,
@@ -227,7 +227,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       });
       // update right hand side
       versions[1].body.load({
-        url: '/html/comparison/' + documentId,
+        url: '/collationtools/get_edits/' + documentId,
         method: 'GET',
         params: {
           'version1': version2,
