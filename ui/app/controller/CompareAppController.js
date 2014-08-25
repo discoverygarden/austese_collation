@@ -143,7 +143,6 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
         var vprevthing_b = Ext.get(variants_b[0]);
         if (vprevthing_b != null) {
           vprevthing_b.stopAnimation();
-          // TODO: Check if the previous span has already finished its animation. Dont animate if it has.
           vprevthing_b.highlight("2156d1", {attr: 'backgroundColor', duration: 1000});
         }
         counterLabel.setCurrentVariant(vcurrent);
