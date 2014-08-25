@@ -126,6 +126,25 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       elem.on("click", function(event, htmlelem) {
         // TODO handle parent/child links
         var vcurrent = elem.getAttribute("data-variant");
+        // Get the current variant, to clear its background-color.
+        var vprevious = counterLabel.getCurrentVariant();
+        var variants_a = versionView.body.query("[data-variant='" + vprevious + "']");
+        var vprevthing = Ext.get(variants_a[0]);
+        if (vprevthing != null) {
+          vprevthing.stopAnimation();
+          vprevthing.highlight("ff0000", {attr: 'backgroundColor', duration: 1000});
+        }
+
+        vprevious_v = otherCounterLabel.getCurrentVariant();
+        var variants_b = otherVersionView.body.query("[data-variant='" + vprevious_v + "']");
+        if (variants_b.length == 0) {
+          variants_b = otherVersionView.body.query("[id='" + vprevious_v + "']");
+        }
+        var vprevthing_b = Ext.get(variants_b[0]);
+        if (vprevthing_b != null) {
+          vprevthing_b.stopAnimation();
+          vprevthing_b.highlight("2156d1", {attr: 'backgroundColor', duration: 1000});
+        }
         counterLabel.setCurrentVariant(vcurrent);
         // get id of prev sibling
         var prev = elem.prev("span[class='merged']");
@@ -157,8 +176,10 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
             otherColor = "2156d1";
             elemColor = "ff0000";
           }
+
           // highlight selected variant
-          elem.highlight(elemColor, {attr: 'backgroundColor', duration: 10000});
+          elem.highlight(elemColor, {attr: 'backgroundColor', duration: 15000});
+
           // lookup corresponding variant on other side
           var matching = Ext.get(otherLetter + theNumber);
           var mvcount;
@@ -168,9 +189,12 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
             if (matchingnext) {
               matching = matchingnext;
             }
-            matching.highlight(otherColor, {attr: 'backgroundColor', duration: 10000});
+            matching.highlight(otherColor, {attr: 'backgroundColor', duration: 15000});
             matching.scrollIntoView(otherVersionView.body);
             mvcount = matching.getAttribute("data-variant");
+            if (typeof mvcount == "undefined" || mvcount == null) {
+              mvcount = matching.getAttribute("id");
+            }
           }
           otherCounterLabel.setCurrentVariant(mvcount);
         }
@@ -190,7 +214,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       var baseurl = this.baseurl;
       // update left hand side
       versions[0].body.load({
-        url: '/collationtools/get_edits/' + documentId,
+        url: '/html/comparison/' + documentId,
         method: 'GET',
         params: {
           'version1': version1,
@@ -227,7 +251,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       });
       // update right hand side
       versions[1].body.load({
-        url: '/collationtools/get_edits/' + documentId,
+        url: '/html/comparison/' + documentId,
         method: 'GET',
         params: {
           'version1': version2,
