@@ -4,7 +4,7 @@
  * @file
  * Emicdora modifications.
  */
-function get_edited_collation($document_id) {
+function collationtools_get_edited_collation($document_id) {
   module_load_include('inc', 'collation', 'includes/calliope');
   global $base_url;
   $file_query = array(
