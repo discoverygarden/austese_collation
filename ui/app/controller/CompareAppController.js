@@ -189,7 +189,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
             if (matchingnext) {
               matching = matchingnext;
             }
-            matching.highlight(otherColor, {attr: 'backgroundColor', duration: 10000});
+            matching.highlight(otherColor, {attr: 'backgroundColor', duration: 15000});
             matching.scrollIntoView(otherVersionView.body);
             mvcount = matching.getAttribute("data-variant");
             if (typeof mvcount == "undefined" || mvcount == null) {
@@ -214,7 +214,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       var baseurl = this.baseurl;
       // update left hand side
       versions[0].body.load({
-        url: '/collationtools/get_edits/' + documentId,
+        url: '/html/comparison/' + documentId,
         method: 'GET',
         params: {
           'version1': version1,
@@ -251,7 +251,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       });
       // update right hand side
       versions[1].body.load({
-        url: '/collationtools/get_edits/' + documentId,
+        url: '/html/comparison/' + documentId,
         method: 'GET',
         params: {
           'version1': version2,
