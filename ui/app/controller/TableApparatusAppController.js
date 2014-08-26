@@ -50,7 +50,6 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
     if (versionSelector.length > 0) {
       params['version1'] = versionSelector[0].getSubmitValue();
     }
-    //console.log(params);
     return params;
   },
   applyOptions: function() {
@@ -62,9 +61,16 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
     tableView.body.load({
       url: url,
       method: 'GET',
-      params: params
+      params: params,
+      success: function() {
+        // Add a tool tip.
+        var blah = jQuery('.siglumleft');
+        jQuery(blah).each(function(){
+          jQuery(this).attr('title', jQuery(this).text());
+        });
+      },
     });
-
+   
     this.getConfigWindow().hide();
   },
   viewRecord: function(button, event) {
@@ -130,7 +136,6 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
     }
   },
   onVersionSelectionChange: function(combo, records, options) {
-    //console.log("on version selection change", arguments)
     var rec = records[0];
     if (rec) {
       var versionName = rec.get("version");
