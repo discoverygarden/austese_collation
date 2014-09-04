@@ -131,8 +131,9 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
         var variants_a = versionView.body.query("[data-variant='" + vprevious + "']");
         var vprevthing = Ext.get(variants_a[0]);
         if (vprevthing != null) {
+          var currentColor = jQuery("#" + vprevthing.id).css('background-color');
           vprevthing.stopAnimation();
-          vprevthing.highlight("ff0000", {attr: 'backgroundColor', duration: 1000});
+          vprevthing.highlight(currentColor, {attr: 'backgroundColor', duration: 1000});
         }
         
         vprevious_v = otherCounterLabel.getCurrentVariant();
@@ -142,8 +143,9 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
         }
         var vprevthing_b = Ext.get(variants_b[0]);
         if (vprevthing_b != null) {
+          var currentColor = jQuery("#" + vprevthing_b.id).css('background-color');
           vprevthing_b.stopAnimation();
-          vprevthing_b.highlight("2156d1", {attr: 'backgroundColor', duration: 1000});
+          vprevthing_b.highlight(currentColor, {attr: 'backgroundColor', duration: 1000});
         }
         counterLabel.setCurrentVariant(vcurrent);
         // get id of prev sibling
