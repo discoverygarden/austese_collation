@@ -135,7 +135,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
           vprevthing.stopAnimation();
           vprevthing.highlight(currentColor, {attr: 'backgroundColor', duration: 1000});
         }
-        
+
         vprevious_v = otherCounterLabel.getCurrentVariant();
         var variants_b = otherVersionView.body.query("[data-variant='" + vprevious_v + "']");
         if (variants_b.length == 0) {
@@ -178,10 +178,10 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
             otherColor = "2156d1";
             elemColor = "ff0000";
           }
-          
+
           // highlight selected variant
           elem.highlight(elemColor, {attr: 'backgroundColor', duration: 15000});
-          
+
           // lookup corresponding variant on other side
           var matching = Ext.get(otherLetter + theNumber);
           var mvcount;
