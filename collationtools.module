@@ -91,7 +91,7 @@ function collationtools_menu() {
     $items['collationtools/get_edits'] = array(
     'title' => 'Get edited collations',
     'file' => "includes/emicdora.inc",
-    'page callback' => 'collation_tools_get_edited_collation',
+    'page callback' => 'collationtools_get_edited_collation',
     'access arguments' => array('edit mvds'),
     'type' => MENU_CALLBACK
   );
