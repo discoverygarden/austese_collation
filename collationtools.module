@@ -88,6 +88,13 @@ function collationtools_menu() {
     'access arguments' => array('edit mvds'),
     'type' => MENU_CALLBACK
   );
+    $items['collationtools/get_edits'] = array(
+    'title' => 'Get edited collations',
+    'file' => "includes/emicdora.inc",
+    'page callback' => 'collationtools_get_edited_collation',
+    'access arguments' => array('edit mvds'),
+    'type' => MENU_CALLBACK
+  );
   return $items;
 }
 
