@@ -10,7 +10,7 @@ Ext.Loader.setPath('TableApparatusApp.controller', modulePath + '/ui/app/control
 Ext.Loader.setPath('TableApparatusApp.view',  modulePath + '/ui/app/view');
 Ext.Loader.setPath('Ext.ux', '/sites/all/libraries/ext-4.1.1a/examples/ux');
 // keep z-index seed low to avoid interfering with drupal admin overlay
-Ext.WindowMgr.zseed = 1040;
+Ext.WindowMgr.zseed = 100;
 Ext.application({
     models: [
         'VersionListModel',
