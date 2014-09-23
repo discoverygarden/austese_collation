@@ -74,14 +74,9 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
               iconCls: 'rightArrowIcon',
               //tooltip: 'Go to next variant'
             },
-            {
-              itemId: 'viewRecordBtn2',
-              text: 'View record',
-              // tooltip: 'Go to next variant'
-            }
           ]
         },
-        
+
         {
           xtype: 'toolbar',
           dock: 'top',
