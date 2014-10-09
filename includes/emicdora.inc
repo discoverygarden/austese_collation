@@ -25,10 +25,10 @@ function collationtools_get_edited_collation($document_id) {
       'version1' => $_GET['version1'],
       'version2' => $_GET['version2'],
       'diff_kind' => $_GET['diff_kind'],
-  )));
-  $contents = file_get_contents($url);
+  )));  $contents = file_get_contents($url);
   $spans = explode('</span>', $contents);
   $fixed_content = austesee_collation_fix_calliope($spans, $_GET['diff_kind']);
+
   $file_params = array(
     'collation' => $document_id,
     'version1' => $_GET['version1'],
@@ -36,7 +36,7 @@ function collationtools_get_edited_collation($document_id) {
     'diff_kind' => $_GET['diff_kind'],
     'emicdora_count' => 0,
   );
-  emicdora_calliope_write_collation($file_params, $contents);
+  emicdora_calliope_write_collation($file_params, $fixed_content);
   echo $contents;
 }
 
@@ -53,14 +53,28 @@ function collationtools_get_edited_collation($document_id) {
  */
 function austesee_collation_fix_calliope($spans, $type) {
   $repaired = array();
-  foreach ($spans as $index => $span) {
-    $span_pos = strpos(trim($span), '<span');
+  $repaired[] = array_shift($spans) . "</span>";
+  $incomplete = FALSE;
+  foreach ($spans as $span) {
+    // Unpleasant but effective cure for mangled <br> tags coming from Calliope.
+    if (substr_count($span, '<b')!= substr_count($span, '<br />')) {
+      $span = str_replace('<b', '', $span);
+      $incomplete = TRUE;
+    }
+    if ($incomplete && substr_count($span, ">r ") == 1) {
+       $span = str_replace('>r', '>', $span);
+       $incomplete = FALSE;
+    }
+    if (substr_count($span, ">/>") > 0) {
+       $span = str_replace('>/>', '>', $span);
+    }
     if (strpos(trim($span), '<span') !== 0) {
-      $repaired[$index] = "<span class='$type'>$span</span> ";
+      $repaired[] = "<span class='$type'>$span</span> ";
     }
     else {
-      $repaired[$index] = "$span</span>";
+      $repaired[] = "$span</span>";
     }
   }
-  return implode('', $repaired);
+  $fixed_xml = implode('', $repaired);
+  return $fixed_xml;
 }
