@@ -25,9 +25,10 @@ function collationtools_get_edited_collation($document_id) {
       'version1' => $_GET['version1'],
       'version2' => $_GET['version2'],
       'diff_kind' => $_GET['diff_kind'],
-  )));  $contents = file_get_contents($url);
+  )));
+  $contents = file_get_contents($url);
   $spans = explode('</span>', $contents);
-  $fixed_content = austesee_collation_fix_calliope($spans, $_GET['diff_kind']);
+  $fixed_content = collationtools_fix_calliope($spans, $_GET['diff_kind']);
 
   $file_params = array(
     'collation' => $document_id,
@@ -51,7 +52,7 @@ function collationtools_get_edited_collation($document_id) {
  * @return xml
  *   Repaired xml
  */
-function austesee_collation_fix_calliope($spans, $type) {
+function collationtools_fix_calliope($spans, $type) {
   $repaired = array();
   $repaired[] = array_shift($spans) . "</span>";
   $incomplete = FALSE;
