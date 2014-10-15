@@ -38,7 +38,7 @@ function collationtools_get_edited_collation($document_id) {
     'emicdora_count' => 0,
   );
   emicdora_calliope_write_collation($file_params, $fixed_content);
-  echo $contents;
+  echo $fixed_content;
 }
 
 /**
@@ -76,6 +76,20 @@ function collationtools_fix_calliope($spans, $type) {
       $repaired[] = "$span</span>";
     }
   }
+  // Add missing id's.
+  $counter = 1;
   $fixed_xml = implode('', $repaired);
-  return $fixed_xml;
+  $working_xml = "<div id = 'emicdora_wrapped'>$fixed_xml</div>";
+  $dom = new DOMDocument();
+  $dom->loadHTML($fixed_xml);
+  $spans = $dom->getElementsByTagName('span');
+  foreach ($spans as $span) {
+    $id = $span->getAttribute('id');
+    if ($id == '') {
+      $id = $type . $counter;
+      $span->setAttribute('id', $id);
+      $counter++;
+    }
+  }
+  return $dom->saveXML();
 }

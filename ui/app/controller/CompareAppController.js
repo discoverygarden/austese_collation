@@ -112,97 +112,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
     var dataId = this.baseurl + "/repository/resources/" + resuuid;
     document.location.href = dataId;
   },
-  attachSyncActions: function(versionView, otherVersionView, counterLabel, otherCounterLabel, cls) {
-    var variants = versionView.body.query("span[class='added'], span[class='deleted']");
-    var variantcount = variants.length;
-    counterLabel.setVariantCount(variantcount);
-    var counter = 1;
-    var controller = this;
-    counterLabel.setCurrentVariant(0);
-    otherCounterLabel.setCurrentVariant(0);
-    Ext.Array.each(variants, function(e) {
-      var elem = Ext.get(e);
-      elem.set({'data-variant': counter++});
-      elem.on("click", function(event, htmlelem) {
-        // TODO handle parent/child links
-        var vcurrent = elem.getAttribute("data-variant");
-        // Get the current variant, to clear its background-color.
-        var vprevious = counterLabel.getCurrentVariant();
-        var variants_a = versionView.body.query("[data-variant='" + vprevious + "']");
-        var vprevthing = Ext.get(variants_a[0]);
-        if (vprevthing != null) {
-          var currentColor = jQuery("#" + vprevthing.id).css('background-color');
-          vprevthing.stopAnimation();
-          vprevthing.highlight(currentColor, {attr: 'backgroundColor', duration: 1000});
-        }
 
-        vprevious_v = otherCounterLabel.getCurrentVariant();
-        var variants_b = otherVersionView.body.query("[data-variant='" + vprevious_v + "']");
-        if (variants_b.length == 0) {
-          variants_b = otherVersionView.body.query("[id='" + vprevious_v + "']");
-        }
-        var vprevthing_b = Ext.get(variants_b[0]);
-        if (vprevthing_b != null) {
-          var currentColor = jQuery("#" + vprevthing_b.id).css('background-color');
-          vprevthing_b.stopAnimation();
-          vprevthing_b.highlight(currentColor, {attr: 'backgroundColor', duration: 1000});
-        }
-        counterLabel.setCurrentVariant(vcurrent);
-        // get id of prev sibling
-        var prev = elem.prev("span[class='merged']");
-        if (!prev) {
-          var allElem = jQuery("*");
-          var currentIndex = allElem.index(elem.dom);
-          var nearest;
-          jQuery(".merged").each(function(i, elm) {
-            var index = allElem.index(elm);
-            if (currentIndex > index) {
-              nearest = elm;
-            }
-          });
-          prev = Ext.get(nearest);
-        }
-        if (prev) {
-          var previd = prev.id;
-          var theNumber = previd.substring(1, previd.length);
-          var theLetter = previd.substring(0, 1);
-          var otherLetter, elemColor, otherColor, otherCls;
-          if (cls == "added") {
-            otherLetter = "d";
-            otherCls = "deleted";
-            otherColor = "ff0000";
-            elemColor = "2156d1";
-          } else {
-            otherLetter = "a";
-            otherCls = "added";
-            otherColor = "2156d1";
-            elemColor = "ff0000";
-          }
-
-          // highlight selected variant
-          elem.highlight(elemColor, {attr: 'backgroundColor', duration: 15000});
-
-          // lookup corresponding variant on other side
-          var matching = Ext.get(otherLetter + theNumber);
-          var mvcount;
-          if (matching) {
-            // highlight next span sibling of that elem (because we are syncing based on id of previous element to the one that was clicked)
-            var matchingnext = matching.next("span");
-            if (matchingnext) {
-              matching = matchingnext;
-            }
-            matching.highlight(otherColor, {attr: 'backgroundColor', duration: 15000});
-            matching.scrollIntoView(otherVersionView.body);
-            mvcount = matching.getAttribute("data-variant");
-            if (typeof mvcount == "undefined" || mvcount == null) {
-              mvcount = matching.getAttribute("id");
-            }
-          }
-          otherCounterLabel.setCurrentVariant(mvcount);
-        }
-      });
-    });
-  },
   onVersionSelectionChange: function(combo, records, options) {
     var rec = records[0];
     var controller = this;
@@ -225,7 +135,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
         },
         scope: controller,
         success: function(response) {
-          controller.attachSyncActions(versions[0], versions[1], counterLabels[0], counterLabels[1], "deleted");
+         // controller.attachSyncActions(versions[0], versions[1], counterLabels[0], counterLabels[1], "deleted");
 
           if (!response.responseText) {
             var resname = version1.split('/');
@@ -262,7 +172,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
         },
         scope: controller,
         success: function(response) {
-          controller.attachSyncActions(versions[1], versions[0], counterLabels[1], counterLabels[0], "added");
+         // controller.attachSyncActions(versions[1], versions[0], counterLabels[1], counterLabels[0], "added");
 
           if (!response.responseText) {
             var resname = version2.split('/');
