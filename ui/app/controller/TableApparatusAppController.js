@@ -70,7 +70,7 @@ Ext.define('TableApparatusApp.controller.TableApparatusAppController', {
         });
       },
     });
-   
+
     this.getConfigWindow().hide();
   },
   viewRecord: function(button, event) {

@@ -28,7 +28,8 @@ function collationtools_get_edited_collation($document_id) {
   )));
   $contents = file_get_contents($url);
   $spans = explode('</span>', $contents);
-  $fixed_content = austesee_collation_fix_calliope($spans, $_GET['diff_kind']);
+  $fixed_content = collationtools_fix_calliope($spans, $_GET['diff_kind']);
+
   $file_params = array(
     'collation' => $document_id,
     'version1' => $_GET['version1'],
@@ -36,8 +37,8 @@ function collationtools_get_edited_collation($document_id) {
     'diff_kind' => $_GET['diff_kind'],
     'emicdora_count' => 0,
   );
-  emicdora_calliope_write_collation($file_params, $contents);
-  echo $contents;
+  emicdora_calliope_write_collation($file_params, $fixed_content);
+  echo $fixed_content;
 }
 
 /**
@@ -51,16 +52,44 @@ function collationtools_get_edited_collation($document_id) {
  * @return xml
  *   Repaired xml
  */
-function austesee_collation_fix_calliope($spans, $type) {
+function collationtools_fix_calliope($spans, $type) {
   $repaired = array();
-  foreach ($spans as $index => $span) {
-    $span_pos = strpos(trim($span), '<span');
+  $repaired[] = array_shift($spans) . "</span>";
+  $incomplete = FALSE;
+  foreach ($spans as $span) {
+    // Unpleasant but effective cure for mangled <br> tags coming from Calliope.
+    if (substr_count($span, '<b')!= substr_count($span, '<br />')) {
+      $span = str_replace('<b', '', $span);
+      $incomplete = TRUE;
+    }
+    if ($incomplete && substr_count($span, ">r ") == 1) {
+       $span = str_replace('>r', '>', $span);
+       $incomplete = FALSE;
+    }
+    if (substr_count($span, ">/>") > 0) {
+       $span = str_replace('>/>', '>', $span);
+    }
     if (strpos(trim($span), '<span') !== 0) {
-      $repaired[$index] = "<span class='$type'>$span</span> ";
+      $repaired[] = "<span class='$type'>$span</span> ";
     }
     else {
-      $repaired[$index] = "$span</span>";
+      $repaired[] = "$span</span>";
     }
   }
-  return implode('', $repaired);
+  // Add missing id's.
+  $counter = 1;
+  $fixed_xml = implode('', $repaired);
+  $working_xml = "<div id = 'emicdora_wrapped'>$fixed_xml</div>";
+  $dom = new DOMDocument();
+  $dom->loadHTML($fixed_xml);
+  $spans = $dom->getElementsByTagName('span');
+  foreach ($spans as $span) {
+    $id = $span->getAttribute('id');
+    if ($id == '') {
+      $id = $type . $counter;
+      $span->setAttribute('id', $id);
+      $counter++;
+    }
+  }
+  return $dom->saveXML();
 }
