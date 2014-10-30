@@ -80,6 +80,7 @@ function collationtools_fix_calliope($spans, $type) {
   $counter = 1;
   $fixed_xml = implode('', $repaired);
   $working_xml = "<div id = 'emicdora_wrapped'>$fixed_xml</div>";
+  libxml_use_internal_errors(true);
   $dom = new DOMDocument();
   $dom->loadHTML($fixed_xml);
   $spans = $dom->getElementsByTagName('span');
