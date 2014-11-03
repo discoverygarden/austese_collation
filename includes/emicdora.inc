@@ -80,9 +80,8 @@ function collationtools_fix_calliope($spans, $type) {
   $counter = 1;
   $fixed_xml = implode('', $repaired);
   $working_xml = "<div id = 'emicdora_wrapped'>$fixed_xml</div>";
-  libxml_use_internal_errors(true);
   $dom = new DOMDocument();
-  $dom->loadHTML($fixed_xml);
+  $dom->loadHTML($working_xml);
   $spans = $dom->getElementsByTagName('span');
   foreach ($spans as $span) {
     $id = $span->getAttribute('id');
@@ -93,7 +92,14 @@ function collationtools_fix_calliope($spans, $type) {
     }
   }
   collationtools_defrag($dom, $spans);
-  return $dom->saveXML();
+  $raw_return = $dom->saveXML();
+  // Remove wrapper.
+  $possibilities = array(
+    '<div id="emicdora_wrapped">',
+    "<div id='emicdora_wrapped'>",
+  );
+  $trimmed_return = str_replace($possibilities, '', $raw_return);
+  return str_replace('</div></body></html>', '</body></html>', $trimmed_return);
 }
 
 /**
