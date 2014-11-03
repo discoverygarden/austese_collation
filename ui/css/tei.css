@@ -22,10 +22,6 @@ span.italics {
 span.bold {
     font-weight: bold;
 }
-span.deleted {
-   color:#858585;
-   border-radius: 3px;
-}
 .founddeleted-default, .overstrike {
     text-decoration: line-through;
 }
@@ -62,8 +58,8 @@ span.deleted {
 .pb {
     color: #bbbbbb;
 }
-span.added, span.inserted {
-    color:#858585;
+span.added, span.inserted, span.deleted {
+    color: #565656;
     border-radius: 3px;
     position: relative;
 }
