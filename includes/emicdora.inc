@@ -58,16 +58,16 @@ function collationtools_fix_calliope($spans, $type) {
   $incomplete = FALSE;
   foreach ($spans as $span) {
     // Unpleasant but effective cure for mangled <br> tags coming from Calliope.
-    if (substr_count($span, '<b')!= substr_count($span, '<br />')) {
+    if (substr_count($span, '<b') != substr_count($span, '<br />')) {
       $span = str_replace('<b', '', $span);
       $incomplete = TRUE;
     }
     if ($incomplete && substr_count($span, ">r ") == 1) {
-       $span = str_replace('>r', '>', $span);
-       $incomplete = FALSE;
+      $span = str_replace('>r', '>', $span);
+      $incomplete = FALSE;
     }
     if (substr_count($span, ">/>") > 0) {
-       $span = str_replace('>/>', '>', $span);
+      $span = str_replace('>/>', '>', $span);
     }
     if (strpos(trim($span), '<span') !== 0) {
       $repaired[] = "<span class='$type'>$span</span> ";
@@ -81,7 +81,7 @@ function collationtools_fix_calliope($spans, $type) {
   $fixed_xml = implode('', $repaired);
   $working_xml = "<div id = 'emicdora_wrapped'>$fixed_xml</div>";
   $dom = new DOMDocument();
-  $dom->loadHTML($fixed_xml);
+  $dom->loadHTML($working_xml);
   $spans = $dom->getElementsByTagName('span');
   foreach ($spans as $span) {
     $id = $span->getAttribute('id');
@@ -91,5 +91,12 @@ function collationtools_fix_calliope($spans, $type) {
       $counter++;
     }
   }
-  return $dom->saveXML();
+  $raw_return = $dom->saveXML();
+  // Remove wrapper.
+  $possibilities = array(
+    '<div id="emicdora_wrapped">',
+    "<div id='emicdora_wrapped'>",
+  );
+  $trimmed_return = str_replace($possibilities, '', $raw_return);
+  return str_replace('</div></body></html>', '</body></html>', $trimmed_return);
 }
