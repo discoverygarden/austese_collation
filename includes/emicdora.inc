@@ -92,6 +92,13 @@ function collationtools_fix_calliope($spans, $type) {
     }
   }
   $raw_return = $dom->saveXML();
+  $wrapper = $dom->getElementById('emicdora_wrapped');
+  $child_nodes = $wrapper->childNodes;
+  $return = '';
+  foreach ($child_nodes as $child) {
+    $return .= $child->ownerDocument->saveXML($child);
+  }
+  return $return;
   // Remove wrapper.
   $possibilities = array(
     '<div id="emicdora_wrapped">',
