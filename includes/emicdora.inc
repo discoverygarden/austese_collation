@@ -70,11 +70,15 @@ function collationtools_fix_calliope($spans, $type) {
       $span = str_replace('>/>', '>', $span);
     }
     if (strpos(trim($span), '<span') !== 0) {
+      if (substr($span, -1) == '>') {
+        $span = substr($span, 0, -1);
+      }
+      $span = str_replace('>br />', '><br />', $span);
       $repaired[] = "<span class='$type'>$span</span> ";
     }
     else {
-      if(substr($span, -1) == '>') {
-        $span = substr($span,0, -1);
+      if (substr($span, -1) == '>') {
+        $span = substr($span, 0, -1);
       }
       $span = str_replace('>br />', '><br />', $span);
       $repaired[] = "$span</span>";
