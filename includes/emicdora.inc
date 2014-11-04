@@ -92,14 +92,13 @@ function collationtools_fix_calliope($spans, $type) {
     }
   }
   collationtools_defrag($dom, $spans);
-  $raw_return = $dom->saveXML();
-  // Remove wrapper.
-  $possibilities = array(
-    '<div id="emicdora_wrapped">',
-    "<div id='emicdora_wrapped'>",
-  );
-  $trimmed_return = str_replace($possibilities, '', $raw_return);
-  return str_replace('</div></body></html>', '</body></html>', $trimmed_return);
+  $wrapper = $dom->getElementById('emicdora_wrapped');
+  $child_nodes = $wrapper->childNodes;
+  $output = '';
+  foreach ($child_nodes as $child) {
+    $output .= $child->ownerDocument->saveXML($child);
+  }
+  return $output;
 }
 
 /**
@@ -115,7 +114,7 @@ function collationtools_defrag($dom, $spans) {
     'a' => 'added',
     'd' => 'deleted',
   );
-  for ($item = 1; $item < $spans->length - 1; $item++) {
+  for ($item = 0; $item < $spans->length - 1; $item++) {
     $current = $spans->item($item);
     if ($current->getAttribute('class') == 'merged') {
       $current_contents = collationtools_get_innerHTML($dom, $current);
@@ -134,11 +133,13 @@ function collationtools_defrag($dom, $spans) {
           break;
 
         case 'END':
-          $previous_element = $spans->item($item - 1);
-          $previous_content = collationtools_get_innerHTML($dom, $previous_element);
-          $previous_state = collationtools_find_space($previous_content);
-          if ($previous_state != 'END' && $previous_state != 'BOTH' && $space_count < 2) {
-            $current->setAttribute('class', $class);
+          if ($item > 0) {
+            $previous_element = $spans->item($item - 1);
+            $previous_content = collationtools_get_innerHTML($dom, $previous_element);
+            $previous_state = collationtools_find_space($previous_content);
+            if ($previous_state != 'END' && $previous_state != 'BOTH' && $space_count < 2) {
+              $current->setAttribute('class', $class);
+            }
           }
           break;
 
@@ -147,11 +148,12 @@ function collationtools_defrag($dom, $spans) {
           $next_item = $spans->item($item + 1);
           $next_contents = collationtools_get_innerHTML($dom, $next_item);
           $next_state = collationtools_find_space($next_contents);
-
-          $previous_element = $spans->item($item - 1);
-          $previous_content = collationtools_get_innerHTML($dom, $previous_element);
-          $previous_state = collationtools_find_space($previous_content);
-
+          $previous_state = FALSE;
+          if ($item > 0) {
+            $previous_element = $spans->item($item - 1);
+            $previous_content = collationtools_get_innerHTML($dom, $previous_element);
+            $previous_state = collationtools_find_space($previous_content);
+          }
 
           if ($next_state != 'START' && $next_state != 'BOTH' && $space_count < 2) {
             $altered = TRUE;
@@ -178,14 +180,21 @@ function collationtools_defrag($dom, $spans) {
  *   Space or br position
  */
 function collationtools_find_space($string) {
+  $br = '<br>';
+  $starts_with_br = strpos($string, $br) === 0 ? TRUE : FALSE;
+  $ends_with_br = substr($string, -strlen($br)) === $br ? TRUE : FALSE;
+  $space_at_start = FAlSE;
+  $space_at_end = FALSE;
   $state = FALSE;
-  if (strlen($string) != strlen(ltrim($string))) {
+  if (strlen($string) != strlen(ltrim($string)) || $starts_with_br) {
     $state = 'START';
+    $space_at_start = TRUE;
   }
-  if (strlen($string) != strlen(rtrim($string))) {
+  if (strlen($string) != strlen(rtrim($string))|| $ends_with_br) {
     $state = 'END';
+    $space_at_end = TRUE;
   }
-  if (strlen($string) - strlen(trim($string)) > 1) {
+  if ($space_at_start &&  $space_at_end) {
     $state = 'BOTH';
   }
   return $state;
