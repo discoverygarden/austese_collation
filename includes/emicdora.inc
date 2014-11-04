@@ -73,6 +73,10 @@ function collationtools_fix_calliope($spans, $type) {
       $repaired[] = "<span class='$type'>$span</span> ";
     }
     else {
+      if (substr($span, -1) == '>') {
+        $span = substr($span, 0, -1);
+      }
+      $span = str_replace('>br />', '><br />', $span);
       $repaired[] = "$span</span>";
     }
   }
