@@ -124,11 +124,13 @@ function collationtools_defrag($dom, $spans) {
       $space_count = substr_count($current->nodeValue, ' ');
       switch ($state) {
         case 'START':
-          $next_item = $spans->item($item + 1);
-          $next_contents = collationtools_get_innerHTML($dom, $next_item);
-          $next_state = collationtools_find_space($next_contents);
-          if ($next_state != 'START' && $next_state != 'BOTH' && $space_count < 2) {
-            $current->setAttribute('class', $class);
+          if ($item < $spans->length - 2) {
+            $next_item = $spans->item($item + 1);
+            $next_contents = collationtools_get_innerHTML($dom, $next_item);
+            $next_state = collationtools_find_space($next_contents);
+            if ($next_state != 'START' && $next_state != 'BOTH' && $space_count < 2) {
+              $current->setAttribute('class', $class);
+            }
           }
           break;
 
@@ -145,10 +147,13 @@ function collationtools_defrag($dom, $spans) {
 
         case FALSE:
           $altered = FALSE;
-          $next_item = $spans->item($item + 1);
-          $next_contents = collationtools_get_innerHTML($dom, $next_item);
-          $next_state = collationtools_find_space($next_contents);
+          $next_state = FALSE;
           $previous_state = FALSE;
+          if ($item < $spans->length - 2) {
+            $next_item = $spans->item($item + 1);
+            $next_contents = collationtools_get_innerHTML($dom, $next_item);
+            $next_state = collationtools_find_space($next_contents);
+          }
           if ($item > 0) {
             $previous_element = $spans->item($item - 1);
             $previous_content = collationtools_get_innerHTML($dom, $previous_element);
@@ -190,11 +195,11 @@ function collationtools_find_space($string) {
     $state = 'START';
     $space_at_start = TRUE;
   }
-  if (strlen($string) != strlen(rtrim($string))|| $ends_with_br) {
+  if (strlen($string) != strlen(rtrim($string)) || $ends_with_br) {
     $state = 'END';
     $space_at_end = TRUE;
   }
-  if ($space_at_start &&  $space_at_end) {
+  if ($space_at_start && $space_at_end) {
     $state = 'BOTH';
   }
   return $state;
