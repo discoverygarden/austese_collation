@@ -75,7 +75,6 @@ function collationtools_fix_calliope($spans, $type) {
     else {
       if(substr($span, -1) == '>') {
         $span = substr($span,0, -1);
-        $stop = 'here';
       }
       $span = str_replace('>br />', '><br />', $span);
       $repaired[] = "$span</span>";
