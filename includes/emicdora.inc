@@ -91,7 +91,6 @@ function collationtools_fix_calliope($spans, $type) {
       $counter++;
     }
   }
-  $raw_return = $dom->saveXML();
   $wrapper = $dom->getElementById('emicdora_wrapped');
   $child_nodes = $wrapper->childNodes;
   $output = '';
