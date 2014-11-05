@@ -53,43 +53,25 @@ function collationtools_get_edited_collation($document_id) {
  *   Repaired xml
  */
 function collationtools_fix_calliope($spans, $type) {
+  $br_token = '!emicdora_br_token!';
   $repaired = array();
   $repaired[] = array_shift($spans) . "</span>";
-  $incomplete = FALSE;
   foreach ($spans as $span) {
-    // Unpleasant but effective cure for mangled <br> tags coming from Calliope.
-    if (substr_count($span, '<b') != substr_count($span, '<br />')) {
-      $span = str_replace('<b', '', $span);
-      $incomplete = TRUE;
-    }
-    if ($incomplete && substr_count($span, ">r ") == 1) {
-      $span = str_replace('>r', '>', $span);
-      $incomplete = FALSE;
-    }
-    if (substr_count($span, ">/>") > 0) {
-      $span = str_replace('>/>', '>', $span);
-    }
-    if (strpos(trim($span), '<span') !== 0) {
-      if (substr($span, -1) == '>') {
-        $span = substr($span, 0, -1);
-      }
-      $span = str_replace('>br />', '><br />', $span);
-      $repaired[] = "<span class='$type'>$span</span> ";
+    if (strpos($span, '<span') === 0) {
+      $repaired[] = "$span</span>";
     }
     else {
-      if (substr($span, -1) == '>') {
-        $span = substr($span, 0, -1);
-      }
-      $span = str_replace('>br />', '><br />', $span);
-      $repaired[] = "$span</span>";
+      $repaired[] = "<span>$span</span>";
     }
   }
   // Add missing id's.
   $counter = 1;
-  $fixed_xml = implode('', $repaired);
+  $xml = implode('', $repaired);
+  $fixed_xml = str_replace($br_token, '<br />', $xml);
   $working_xml = "<div id = 'emicdora_wrapped'>$fixed_xml</div>";
   $dom = new DOMDocument();
   $dom->loadHTML($working_xml);
+
   $spans = $dom->getElementsByTagName('span');
   foreach ($spans as $span) {
     $id = $span->getAttribute('id');
