@@ -29,11 +29,13 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
             {
               itemId: 'prevVariantBtn1',
               iconCls: 'leftArrowIcon',
+              cls: 'emicdora_previous_button',
               //tooltip: 'Go to previous variant'
             },
             {
               itemId: 'nextVariantBtn1',
               iconCls: 'rightArrowIcon',
+              cls: 'emicdora_next_button',
               // tooltip: 'Go to next variant'
             },
             {
@@ -62,11 +64,13 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
             {
               itemId: 'prevVariantBtn2',
               iconCls: 'leftArrowIcon',
+              cls: 'emicdora_previous_button',
               //tooltip: 'Go to previous variant'
             },
             {
               itemId: 'nextVariantBtn2',
               iconCls: 'rightArrowIcon',
+              cls: 'emicdora_next_button',
               //tooltip: 'Go to next variant'
             },
           ]

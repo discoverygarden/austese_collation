@@ -53,35 +53,25 @@ function collationtools_get_edited_collation($document_id) {
  *   Repaired xml
  */
 function collationtools_fix_calliope($spans, $type) {
+  $br_token = '!emicdora_br_token!';
   $repaired = array();
   $repaired[] = array_shift($spans) . "</span>";
-  $incomplete = FALSE;
   foreach ($spans as $span) {
-    // Unpleasant but effective cure for mangled <br> tags coming from Calliope.
-    if (substr_count($span, '<b')!= substr_count($span, '<br />')) {
-      $span = str_replace('<b', '', $span);
-      $incomplete = TRUE;
-    }
-    if ($incomplete && substr_count($span, ">r ") == 1) {
-       $span = str_replace('>r', '>', $span);
-       $incomplete = FALSE;
-    }
-    if (substr_count($span, ">/>") > 0) {
-       $span = str_replace('>/>', '>', $span);
-    }
-    if (strpos(trim($span), '<span') !== 0) {
-      $repaired[] = "<span class='$type'>$span</span> ";
+    if (strpos($span, '<span') === 0) {
+      $repaired[] = "$span</span>";
     }
     else {
-      $repaired[] = "$span</span>";
+      $repaired[] = "<span>$span</span>";
     }
   }
   // Add missing id's.
   $counter = 1;
-  $fixed_xml = implode('', $repaired);
+  $xml = implode('', $repaired);
+  $fixed_xml = str_replace($br_token, '<br />', $xml);
   $working_xml = "<div id = 'emicdora_wrapped'>$fixed_xml</div>";
   $dom = new DOMDocument();
-  $dom->loadHTML($fixed_xml);
+  $dom->loadHTML($working_xml);
+
   $spans = $dom->getElementsByTagName('span');
   foreach ($spans as $span) {
     $id = $span->getAttribute('id');
@@ -91,5 +81,135 @@ function collationtools_fix_calliope($spans, $type) {
       $counter++;
     }
   }
-  return $dom->saveXML();
+  collationtools_defrag($dom, $spans);
+  $wrapper = $dom->getElementById('emicdora_wrapped');
+  $child_nodes = $wrapper->childNodes;
+  $output = '';
+  foreach ($child_nodes as $child) {
+    $output .= $child->ownerDocument->saveXML($child);
+  }
+  return $output;
+}
+
+/**
+ * Redefines granularity to whole words
+ *
+ * @param DOMDocument $dom
+ *   Representation of entire document
+ * @param DOMNodeList $spans
+ *   List of span elements
+ */
+function collationtools_defrag($dom, $spans) {
+  $mappings = array(
+    'a' => 'added',
+    'd' => 'deleted',
+  );
+  for ($item = 0; $item < $spans->length - 1; $item++) {
+    $current = $spans->item($item);
+    if ($current->getAttribute('class') == 'merged') {
+      $current_contents = collationtools_get_innerHTML($dom, $current);
+      $id = $current->getAttribute('id');
+      $class = $mappings[$id[0]];
+      $state = collationtools_find_space($current_contents);
+      $space_count = substr_count($current->nodeValue, ' ');
+      switch ($state) {
+        case 'START':
+          if ($item < $spans->length - 2) {
+            $next_item = $spans->item($item + 1);
+            $next_contents = collationtools_get_innerHTML($dom, $next_item);
+            $next_state = collationtools_find_space($next_contents);
+            if ($next_state != 'START' && $next_state != 'BOTH' && $space_count < 2) {
+              $current->setAttribute('class', $class);
+            }
+          }
+          break;
+
+        case 'END':
+          if ($item > 0) {
+            $previous_element = $spans->item($item - 1);
+            $previous_content = collationtools_get_innerHTML($dom, $previous_element);
+            $previous_state = collationtools_find_space($previous_content);
+            if ($previous_state != 'END' && $previous_state != 'BOTH' && $space_count < 2) {
+              $current->setAttribute('class', $class);
+            }
+          }
+          break;
+
+        case FALSE:
+          $altered = FALSE;
+          $next_state = FALSE;
+          $previous_state = FALSE;
+          if ($item < $spans->length - 2) {
+            $next_item = $spans->item($item + 1);
+            $next_contents = collationtools_get_innerHTML($dom, $next_item);
+            $next_state = collationtools_find_space($next_contents);
+          }
+          if ($item > 0) {
+            $previous_element = $spans->item($item - 1);
+            $previous_content = collationtools_get_innerHTML($dom, $previous_element);
+            $previous_state = collationtools_find_space($previous_content);
+          }
+
+          if ($next_state != 'START' && $next_state != 'BOTH' && $space_count < 2) {
+            $altered = TRUE;
+          }
+          if ($previous_state != 'END' && $previous_state != 'BOTH' && $space_count < 2) {
+            $altered = TRUE;
+          }
+          if ($altered) {
+            $current->setAttribute('class', $class);
+          }
+          break;
+      }
+    }
+  }
+}
+
+/**
+ * Locates space or br tag in input string.
+ *
+ * @param string $string
+ *   String being searched
+ *
+ * @return string
+ *   Space or br position
+ */
+function collationtools_find_space($string) {
+  $br = '<br>';
+  $starts_with_br = strpos($string, $br) === 0 ? TRUE : FALSE;
+  $ends_with_br = substr($string, -strlen($br)) === $br ? TRUE : FALSE;
+  $space_at_start = FAlSE;
+  $space_at_end = FALSE;
+  $state = FALSE;
+  if (strlen($string) != strlen(ltrim($string)) || $starts_with_br) {
+    $state = 'START';
+    $space_at_start = TRUE;
+  }
+  if (strlen($string) != strlen(rtrim($string)) || $ends_with_br) {
+    $state = 'END';
+    $space_at_end = TRUE;
+  }
+  if ($space_at_start && $space_at_end) {
+    $state = 'BOTH';
+  }
+  return $state;
+}
+
+/**
+ * Gets innerHTML of DOMElement
+ *
+ * @param DOMDocument $dom
+ *   Enclosing DOM
+ * @param DOMElement $element
+ *   Element being examined
+ *
+ * @return string
+ *   InnerHTML
+ */
+function collationtools_get_innerHTML($dom, $element) {
+  $html = '';
+  foreach ($element->childNodes as $child) {
+    $html .= $dom->saveHTML($child);
+  }
+  return $html;
 }
