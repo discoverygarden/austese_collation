@@ -27,7 +27,7 @@ function collationtools_get_edited_collation($document_id) {
       'diff_kind' => $_GET['diff_kind'],
   )));
   $contents = file_get_contents($url);
-  $spans = explode('</span>', $contents);
+  $spans = preg_split( '#</span>#', $contents, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
   $fixed_content = collationtools_fix_calliope($spans, $_GET['diff_kind']);
 
   $file_params = array(
@@ -55,7 +55,7 @@ function collationtools_get_edited_collation($document_id) {
 function collationtools_fix_calliope($spans, $type) {
   $br_token = '!emicdora_br_token!';
   $repaired = array();
-  $repaired[] = array_shift($spans) . "</span>";
+  $repaired[] = array_shift($spans);
   foreach ($spans as $span) {
     if (strpos($span, '<span') === 0) {
       $repaired[] = "$span</span>";
