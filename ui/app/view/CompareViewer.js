@@ -75,13 +75,12 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
             },
           ]
         },
-
         {
           xtype: 'toolbar',
           dock: 'top',
-          enableOverflow: false,
           items: [
-                        {
+            '->',
+            {
               xtype: 'combobox',
               width: 200,
               itemId: 'documentSelector',
@@ -92,35 +91,8 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
               valueVield: 'documentId',
               editable: false,
               grow: true,
-              labelWidth: 55
-            },
-            {
-              xtype: 'combobox',
-              itemId: 'versionSelector1',
-              typeAhead: true,
-              forceSelection: true,
-              fieldLabel: 'Version 1',
-              store: 'VersionListStore',
-              displayField: 'longname',
-              valueField: 'version',
-              matchFieldWidth: false,
-              editable: false,
               labelWidth: 55,
-              width: 200
-            },
-            {
-              xtype: 'combobox',
-              itemId: 'versionSelector2',
-              typeAhead: true,
-              forceSelection: true,
-              fieldLabel: 'Version 2',
-              store: 'VersionListStore',
-              displayField: 'longname',
-              valueField: 'version',
-              matchFieldWidth: false,
-              editable: false,
-              labelWidth: 55,
-              width: 200
+              hidden: true
             },
             {
               xtype: 'button',
@@ -128,7 +100,40 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
               itemId: 'toggleFullscreenButton',
               tooltip: 'Toggle fullscreen mode'
             }
-
+          ]
+        },
+        {
+          xtype: 'toolbar',
+          dock: 'top',
+          enableOverflow: false,
+          items: [
+            {
+              xtype: 'combobox',
+              itemId: 'versionSelector1',
+              typeAhead: true,
+              forceSelection: true,
+              store: 'VersionListStore',
+              displayField: 'longname',
+              valueField: 'version',
+              matchFieldWidth: false,
+              editable: false,
+              labelWidth: 55,
+              width: '50%'
+            },
+            '->',
+            {
+              xtype: 'combobox',
+              itemId: 'versionSelector2',
+              typeAhead: true,
+              forceSelection: true,
+              store: 'VersionListStore',
+              displayField: 'longname',
+              valueField: 'version',
+              matchFieldWidth: false,
+              editable: false,
+              labelWidth: 55,
+              width: '50%'
+            },
           ]
         }
       ],
