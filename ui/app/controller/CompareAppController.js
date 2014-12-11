@@ -218,7 +218,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
     var placeholder = Ext.get('uiplaceholder');
     var placeWidth = placeholder.getX() * 2;
     var newHeight = h - (placeholder.getY()) - 70;
-    var newWidth = w - placeWidth;
+    var newWidth = (w - placeWidth) * 1.35;
     placeholder.setHeight(newHeight);
     uiPanel.setHeight(newHeight);
     placeholder.setWidth(newWidth);
