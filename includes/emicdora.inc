@@ -55,7 +55,7 @@ function collationtools_get_edited_collation($document_id) {
 function collationtools_fix_calliope($spans, $type) {
   $br_token = '!emicdora_br_token!';
   $repaired = array();
-  $repaired[] = array_shift($spans);
+  $repaired[] = array_shift($spans). "</span>";
   foreach ($spans as $span) {
     if (strpos($span, '<span') === 0) {
       $repaired[] = "$span</span>";
