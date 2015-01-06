@@ -28,6 +28,8 @@ function collationtools_get_edited_collation($document_id) {
       'diff_kind' => $_GET['diff_kind'],
   )));
   $raw_contents = file_get_contents($url);
+  // The MVD engine breaks br's where we don't want them broken.
+  // Replacing with tokens makes it all work.
   $contents = str_replace($br_token, '<br />', $raw_contents);
   $dom = new DOMDocument();
   $dom->loadHTML($contents);
@@ -35,14 +37,14 @@ function collationtools_get_edited_collation($document_id) {
   $body = $bodies->item(0);
   // Get rid of comment nodes.
   foreach ($dom->childNodes as $node) {
-    if ($node->nodeName == '#comment') {
+    if ($node->nodeType === XML_COMMENT_NODE) {
       $node->parentNode->removeChild($node);
     }
   }
   $all_nodes = $body->childNodes;
   foreach ($all_nodes as $node) {
     // Convert text nodes to spans.
-    if ($node->nodeName == '#text') {
+    if ($node->nodeType == XML_TEXT_NODE) {
       $new_span = $dom->createElement('span', $node->nodeValue);
       $new_span->setAttribute('class', $_GET['diff_kind']);
       $parent = $node->parentNode;
