@@ -7,6 +7,7 @@
 function collationtools_get_edited_collation($document_id) {
   module_load_include('inc', 'collation', 'includes/calliope');
   global $base_url;
+  $br_token = '!emicdora_br_token!';
   $file_query = array(
     'emic_data.collation' => $document_id,
     'emic_data.version1' => $_GET['version1'],
@@ -26,10 +27,36 @@ function collationtools_get_edited_collation($document_id) {
       'version2' => $_GET['version2'],
       'diff_kind' => $_GET['diff_kind'],
   )));
-  $contents = file_get_contents($url);
-  $spans = preg_split( '#</span>#', $contents, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-  $fixed_content = collationtools_fix_calliope($spans, $_GET['diff_kind']);
-
+  $raw_contents = file_get_contents($url);
+  // The MVD engine breaks br's where we don't want them broken.
+  // Replacing with tokens makes it all work.
+  $contents = str_replace($br_token, '<br />', $raw_contents);
+  $dom = new DOMDocument();
+  $dom->loadHTML($contents);
+  $bodies = $dom->getElementsByTagName('body');
+  $body = $bodies->item(0);
+  // Get rid of comment nodes.
+  foreach ($dom->childNodes as $node) {
+    // XXX: There can only be one comment per MVD containing unused CSS.
+    if ($node->nodeType === XML_COMMENT_NODE) {
+      $node->parentNode->removeChild($node);
+    }
+  }
+  $all_nodes = $body->childNodes;
+  foreach ($all_nodes as $node) {
+    // Convert text nodes to spans.
+    // XXX: Austese can return content with orphaned text nodes. As such, let's
+    // wrap them in spans as they were meant to be.
+    if ($node->nodeType === XML_TEXT_NODE) {
+      $new_span = $dom->createElement('span', $node->nodeValue);
+      $new_span->setAttribute('class', $_GET['diff_kind']);
+      $parent = $node->parentNode;
+      $parent->replaceChild($new_span, $node);
+    }
+  }
+  // Repair content.
+  $fixed_content = collationtools_fix_calliope($dom, $_GET['diff_kind']);
+  // Save fixed content.
   $file_params = array(
     'collation' => $document_id,
     'version1' => $_GET['version1'],
@@ -44,35 +71,17 @@ function collationtools_get_edited_collation($document_id) {
 /**
  * Repairs possibly damaged Calliope.
  *
- * @param array $spans
- *   array of spans from file
+ * @param DomDocument $dom
+ *   DOM representing file
  * @param string $type
  *   'delete' or 'added'
  *
  * @return xml
  *   Repaired xml
  */
-function collationtools_fix_calliope($spans, $type) {
-  $br_token = '!emicdora_br_token!';
-  $repaired = array();
-  $repaired[] = array_shift($spans);
-  foreach ($spans as $span) {
-    if (strpos($span, '<span') === 0) {
-      $repaired[] = "$span</span>";
-    }
-    else {
-      $repaired[] = "<span>$span</span>";
-    }
-  }
-  // Add missing id's.
-  $counter = 1;
-  $xml = implode('', $repaired);
-  $fixed_xml = str_replace($br_token, '<br />', $xml);
-  $working_xml = "<div id = 'emicdora_wrapped'>$fixed_xml</div>";
-  $dom = new DOMDocument();
-  $dom->loadHTML($working_xml);
-
+function collationtools_fix_calliope($dom, $type) {
   $spans = $dom->getElementsByTagName('span');
+  $counter = 1;
   foreach ($spans as $span) {
     $id = $span->getAttribute('id');
     if ($id == '') {
@@ -82,13 +91,7 @@ function collationtools_fix_calliope($spans, $type) {
     }
   }
   collationtools_defrag($dom, $spans);
-  $wrapper = $dom->getElementById('emicdora_wrapped');
-  $child_nodes = $wrapper->childNodes;
-  $output = '';
-  foreach ($child_nodes as $child) {
-    $output .= $child->ownerDocument->saveXML($child);
-  }
-  return $output;
+  return $dom->saveXML();
 }
 
 /**
