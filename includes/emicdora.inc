@@ -36,6 +36,7 @@ function collationtools_get_edited_collation($document_id) {
   $bodies = $dom->getElementsByTagName('body');
   $body = $bodies->item(0);
   // Get rid of comment nodes.
+  // Structure is unnested so recursion not required.
   foreach ($dom->childNodes as $node) {
     if ($node->nodeType === XML_COMMENT_NODE) {
       $node->parentNode->removeChild($node);
@@ -44,7 +45,8 @@ function collationtools_get_edited_collation($document_id) {
   $all_nodes = $body->childNodes;
   foreach ($all_nodes as $node) {
     // Convert text nodes to spans.
-    if ($node->nodeType == XML_TEXT_NODE) {
+    // Structure is unnested so recursion not required.
+    if ($node->nodeType === XML_TEXT_NODE) {
       $new_span = $dom->createElement('span', $node->nodeValue);
       $new_span->setAttribute('class', $_GET['diff_kind']);
       $parent = $node->parentNode;
