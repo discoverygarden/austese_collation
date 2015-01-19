@@ -242,9 +242,7 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       "#documentSelector": {
         change: this.onDocumentIdChange
       },
-      "versionview": {
-        scroll: this.syncScroll
-      },
+
       "#prevVariantBtn1, #prevVariantBtn2": {
         click: function(button, event) {
           this.moveVariant(button, event, -1);
