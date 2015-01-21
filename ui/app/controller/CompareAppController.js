@@ -55,28 +55,6 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       versionSelector2.fireEvent('select', versionSelector1, records);
     }
   },
-  moveVariant: function(button, event, direction) {
-    var versions = Ext.ComponentQuery.query('versionview');
-    var currentVersion;
-    var current;
-    if (button.itemId == "prevVariantBtn1" || button.itemId == "nextVariantBtn1") {
-      // left hand side
-      currentVersion = versions[0];
-      current = parseInt(button.next("variantcountlabel").getCurrentVariant(), 10);
-    } else {
-      // right hand side
-      currentVersion = versions[1];
-      current = parseInt(button.prev("variantcountlabel").getCurrentVariant(), 10);
-    }
-    if (!current) {
-      current = 1;
-    }
-    var prev = currentVersion.body.select("span[data-variant=" + (current + (direction * 1)) + "]").elements[0];
-    if (prev) {
-      prev.click();
-      Ext.get(prev).scrollIntoView(currentVersion.body);
-    }
-  },
   viewRecord: function(button, event) {
     var docstore = Ext.getStore('DocumentListStore');
     var docombo = Ext.ComponentQuery.query('#documentSelector')[0];
@@ -241,17 +219,6 @@ Ext.define('TableApparatusApp.controller.CompareAppController', {
       },
       "#documentSelector": {
         change: this.onDocumentIdChange
-      },
-
-      "#prevVariantBtn1, #prevVariantBtn2": {
-        click: function(button, event) {
-          this.moveVariant(button, event, -1);
-        }
-      },
-      "#nextVariantBtn1, #nextVariantBtn2": {
-        click: function(button, event) {
-          this.moveVariant(button, event, 1);
-        }
       },
       "#viewRecordBtn1, #viewRecordBtn2": {
         click: this.viewRecord
