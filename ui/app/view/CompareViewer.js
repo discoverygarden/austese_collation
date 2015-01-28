@@ -50,8 +50,9 @@ Ext.define('TableApparatusApp.view.CompareViewer', {
               itemId: 'syncButton',
               enableToggle: true,
               pressed: true,
-              tooltip: 'Synchronize scrolling between versions',
-              iconCls: 'syncIcon'
+              tooltip: 'Toggle synchronization scrolling between versions',
+              iconCls: 'syncIcon',
+              cls: 'emicdora_sync_button',
             },
             {xtype: 'tbfill'},
             {
