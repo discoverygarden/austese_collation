@@ -7,7 +7,8 @@
 function collationtools_get_edited_collation($document_id) {
   module_load_include('inc', 'collation', 'includes/calliope');
   global $base_url;
-  $br_token = '☂';
+  // Sanitized unicode Object replacement character.
+  $br_token = json_decode('"\uFFFC"');
   $file_query = array(
     'emic_data.collation' => $document_id,
     'emic_data.version1' => $_GET['version1'],
