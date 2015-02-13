@@ -92,7 +92,10 @@ function collationtools_menu() {
     'title' => 'Get edited collations',
     'file' => "includes/emicdora.inc",
     'page callback' => 'collationtools_get_edited_collation',
-    'access arguments' => array('edit mvds'),
+    // While this does actually write to mongo it doesn't change content and is
+    // required for basic view access, when the user views a particular version
+    // the comparison is generated and stored.
+    'access arguments' => array('view collation tools'),
     'type' => MENU_CALLBACK
   );
   return $items;
