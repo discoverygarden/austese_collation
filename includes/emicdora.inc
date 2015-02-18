@@ -69,7 +69,31 @@ function collationtools_get_edited_collation($document_id) {
     'diff_kind' => $_GET['diff_kind'],
     'emicdora_count' => 0,
   );
-  $collation = $dom->saveXML();
+  $collation_dom = collationtools_add_ids($dom, $_GET['diff_kind']);
+  $collation = $collation_dom->saveXML();
   emicdora_calliope_write_collation($file_params, $collation);
   echo $collation;
+}
+
+/**
+ * Add IDs to the spans in a collation.
+ *
+ * @param DomDocument $dom
+ *   A collation.
+ * @param string $type
+ *   'delete' or 'added'.
+ *
+ * @return DOMDocument
+ *   XML now with IDs for easier access.
+ */
+function collationtools_add_ids(DOMDocument $dom, $type) {
+  $spans = $dom->getElementsByTagName('span');
+  $counter = 1;
+  foreach ($spans as $span) {
+    if ($span->getAttribute('id') == '') {
+      $span->setAttribute('id', $type . $counter);
+      $counter++;
+    }
+  }
+  return $dom;
 }
