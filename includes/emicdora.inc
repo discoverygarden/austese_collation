@@ -38,8 +38,8 @@ function collationtools_get_edited_collation($document_id) {
   // The MVD engine breaks br's where we don't want them broken.
   // Replacing with tokens makes it all work.
   $contents = str_replace($br_token, '<br />', $raw_contents);
-  $dom = new DOMDocument();
-  $dom->loadHTML($contents);
+  $dom = new DOMDocument('1.0', 'UTF-8');
+  $dom->loadHTML(mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8'));
   $bodies = $dom->getElementsByTagName('body');
   $body = $bodies->item(0);
   // Get rid of comment nodes.
