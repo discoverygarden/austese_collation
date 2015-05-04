@@ -390,5 +390,3 @@ function collationtools_theme() {
 /**
  * @} End of "defgroup collationtools".
  */
-
-

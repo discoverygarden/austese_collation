@@ -10,6 +10,7 @@ if (!ISSET($project) && isset($_GET['project'])) {
  $project = "";
 }
 ?>
+
 <div id="metadata"
  <?php if (ISSET($project) && austese_access('edit metadata', $project)): ?>
   data-editable="true"
