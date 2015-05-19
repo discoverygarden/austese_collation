@@ -63,6 +63,12 @@
   background-color: black !important;
   color: white !important;
   margin-right: 5px;
+  padding-top: 5px !important;
+}
+#full-window-button{
+  background-color: transparent !important;
+  box-shadow: none !important;
+
 }
 .ui-widget-content.collation_resize.emcidora_input.ui-resizable, .ui-widget-content.merged_resize.emcidora_input{
   max-width: 100%;
