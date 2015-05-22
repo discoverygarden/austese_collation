@@ -69,6 +69,7 @@ function collationtools_get_edited_collation($document_id) {
     'diff_kind' => $_GET['diff_kind'],
     'emicdora_count' => 0,
   );
+  $collation_dom = collation_tools_add_data_variant($dom, $_GET['diff_kind']);
   $collation_dom = collationtools_add_ids($dom, $_GET['diff_kind']);
   $collation = $collation_dom->saveXML();
   emicdora_calliope_write_collation($file_params, $collation);
@@ -93,6 +94,25 @@ function collationtools_add_ids(DOMDocument $dom, $type) {
     if ($span->getAttribute('id') == '') {
       $span->setAttribute('id', $type . $counter);
       $counter++;
+    }
+  }
+  return $dom;
+}
+
+function collation_tools_add_data_variant(DOMDocument $dom, $type) {
+  $spans = $dom->getElementsByTagName('span');
+  foreach ($spans as $span) {
+    if ($span->getAttribute('class') == 'merged') {
+      $node_value = $span->nodeValue;
+      if (strlen($node_value) < 5) {
+        $span->setAttribute('class', $type);
+      }
+      $id = $span->getAttribute('id');
+      $selector = $type[0];
+      if ($id[0] == $selector) {
+        $variant = substr($id, 1);
+        $span->setAttribute('data-variant', $variant);
+      }
     }
   }
   return $dom;
